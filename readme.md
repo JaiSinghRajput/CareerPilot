@@ -268,6 +268,11 @@ These features belong to later phases.
 
 ---
 
+# Documents
+- [Project Requirement Document](./docs/PRD.md)
+- [Technical Requirement Document](./docs/TRD.md)
+- [Project Architecture Document](./docs/Architecture.md)
+
 # 🔥 End Goal
 
 By the completion of Phase 1, CareerPilot AI should function as a production-ready AI Resume Builder that enables users to create professional, ATS-optimized resumes in minutes while laying the technical foundation for intelligent job matching and AI interview preparation in future phases.
