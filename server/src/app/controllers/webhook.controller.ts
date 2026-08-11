@@ -67,7 +67,7 @@ export const clerkWebhookHandler = async (req: express.Request, res: express.Res
 
       await db.insert(usersTable).values({
         clerkId: id,
-        email: email,
+        email: email || `no-email-${id}@example.com`,
         name: name || 'Unknown',
         profilePictureUrl: imageUrl,
       });
@@ -83,7 +83,7 @@ export const clerkWebhookHandler = async (req: express.Request, res: express.Res
       await db
         .update(usersTable)
         .set({
-          email: email,
+          email: email || `no-email-${id}@example.com`,
           name: name || 'Unknown',
           profilePictureUrl: imageUrl,
           updatedAt: new Date(),
@@ -105,8 +105,12 @@ export const clerkWebhookHandler = async (req: express.Request, res: express.Res
     }
 
     res.status(200).json({ success: true, message: 'Webhook received' });
-  } catch (dbError) {
+  } catch (dbError: any) {
     console.error('Database operation failed during webhook:', dbError);
-    res.status(500).json({ success: false, message: 'Database sync error' });
+    res.status(500).json({ 
+      success: false, 
+      message: 'Database sync error',
+      error: dbError.message || String(dbError)
+    });
   }
 };
