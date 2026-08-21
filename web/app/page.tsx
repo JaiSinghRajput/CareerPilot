@@ -1,4 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
+import { useUser } from "@clerk/nextjs";
+import UserProfile from "@/components/UserProfile";
 
 const features = [
   {
@@ -55,6 +60,7 @@ const steps = [
 ];
 
 export default function Home() {
+  const { isSignedIn, user } = useUser();
   return (
     <main className="landing-page">
       {/* Navigation */}
@@ -70,13 +76,28 @@ export default function Home() {
           </div>
 
           <div className="nav-actions">
-            <Link href="/sign-in" className="sign-in-link">
-              Sign In
-            </Link>
 
-            <Link href="/sign-up" className="primary-button nav-button">
-              Get Started
-            </Link>
+            <ThemeToggle />
+
+            {isSignedIn ? (
+              <>
+                <span className="welcome-text">
+                  Hi, {user?.firstName || "User"}
+                </span>
+
+                <UserProfile />
+              </>
+            ) : (
+              <>
+                <Link href="/sign-in" className="sign-in-link">
+                  Sign In
+                </Link>
+
+                <Link href="/sign-up" className="primary-button nav-button">
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -94,9 +115,19 @@ export default function Home() {
             </div>
 
             <h1>
-              Build. Explore.
-              <br />
-              <span>Prepare. Get Hired.</span>
+              {isSignedIn ? (
+                <>
+                  Welcome back, {user?.firstName || "there"}!
+                  <br />
+                  <span>Ready to Get Hired?</span>
+                </>
+              ) : (
+                <>
+                  Build. Explore.
+                  <br />
+                  <span>Prepare. Get Hired.</span>
+                </>
+              )}
             </h1>
 
             <p>
@@ -106,8 +137,11 @@ export default function Home() {
             </p>
 
             <div className="hero-actions">
-              <Link href="/sign-up" className="primary-button">
-                Start Your Journey →
+              <Link
+                href={isSignedIn ? "#features" : "/sign-up"}
+                className="primary-button"
+              >
+                {isSignedIn ? "Explore Your Career →" : "Start Your Journey →"}
               </Link>
 
               <a href="#features" className="secondary-button">
