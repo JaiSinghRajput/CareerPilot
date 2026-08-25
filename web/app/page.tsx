@@ -2,36 +2,37 @@
 
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
+import { FileText, Lightbulb, Search, MessageSquare, Mic, ArrowRight, Sparkles, CheckCircle, Zap } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import UserProfile from "@/components/UserProfile";
 
 const features = [
   {
-    icon: "✦",
+    icon: <FileText className="w-6 h-6" />,
     title: "AI Resume Builder",
     description:
       "Create a professional, ATS-friendly resume with AI-powered guidance.",
   },
   {
-    icon: "◆",
+    icon: <Lightbulb className="w-6 h-6" />,
     title: "AI Project Recommendation",
     description:
       "Discover project ideas tailored to your skills, interests, and career goals.",
   },
   {
-    icon: "↗",
+    icon: <Search className="w-6 h-6" />,
     title: "AI Job Explorer",
     description:
       "Explore relevant job opportunities and discover your next career opportunity.",
   },
   {
-    icon: "◎",
+    icon: <MessageSquare className="w-6 h-6" />,
     title: "AI Mock Interview",
     description:
       "Practice realistic interviews and improve your answers with AI-powered feedback.",
   },
   {
-    icon: "◉",
+    icon: <Mic className="w-6 h-6" />,
     title: "AI Audio Interview",
     description:
       "Prepare for interviews with an interactive voice-based interview experience.",
@@ -110,7 +111,7 @@ export default function Home() {
         <div className="container hero-grid">
           <div className="hero-content">
             <div className="hero-badge">
-              <span />
+              <Sparkles className="w-4 h-4 text-primary" />
               AI-powered career platform
             </div>
 
@@ -139,9 +140,9 @@ export default function Home() {
             <div className="hero-actions">
               <Link
                 href={isSignedIn ? "#features" : "/sign-up"}
-                className="primary-button"
+                className="primary-button flex items-center gap-2"
               >
-                {isSignedIn ? "Explore Your Career →" : "Start Your Journey →"}
+                {isSignedIn ? "Explore Your Career" : "Start Your Journey"} <ArrowRight className="w-4 h-4" />
               </Link>
 
               <a href="#features" className="secondary-button">
@@ -161,7 +162,9 @@ export default function Home() {
                   <h3>Career Dashboard</h3>
                 </div>
 
-                <span className="status-badge">AI Ready</span>
+                <span className="status-badge flex items-center gap-1">
+                  <CheckCircle className="w-3 h-3" /> AI Ready
+                </span>
               </div>
 
               <div className="dashboard-stats">
@@ -223,7 +226,9 @@ export default function Home() {
 
                 <p>{feature.description}</p>
 
-                <span className="feature-link">Explore →</span>
+                <span className="feature-link flex items-center gap-1">
+                  Explore <ArrowRight className="w-4 h-4" />
+                </span>
               </div>
             ))}
           </div>
@@ -270,8 +275,8 @@ export default function Home() {
                 AI tools designed for your career.
               </p>
 
-              <Link href="/sign-up" className="primary-button">
-                Get Started →
+              <Link href="/sign-up" className="primary-button flex items-center gap-2">
+                Get Started <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>

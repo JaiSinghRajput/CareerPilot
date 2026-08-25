@@ -1,0 +1,7 @@
+import type { Request, Response } from 'express';
+export declare class AIController {
+    static chat(req: Request, res: Response): Promise<void>;
+    static uploadResume(req: Request, res: Response): Promise<void>;
+    static analyzeResume(req: Request, res: Response): Promise<void>;
+}
+//# sourceMappingURL=ai.controller.d.ts.map

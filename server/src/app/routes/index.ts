@@ -1,4 +1,5 @@
 import express, { type Router } from 'express';
+import AIRoutes from '../modules/ai/ai.route.js';
 
 const router: Router = express.Router();
 
@@ -8,10 +9,10 @@ interface ModuleRoute {
 }
 
 const moduleRoutes: ModuleRoute[] = [
-  // {
-  //   path: '/users',
-  //   route: UserRoutes,
-  // }
+  {
+    path: '/ai',
+    route: AIRoutes,
+  }
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));
