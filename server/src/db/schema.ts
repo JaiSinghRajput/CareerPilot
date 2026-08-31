@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, timestamp, boolean } from "drizzle-orm/pg-core";
+import { integer, pgTable, varchar, timestamp, boolean, text, jsonb } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -12,4 +12,33 @@ export const usersTable = pgTable("users", {
     lastLoginAt: timestamp("last_login_at"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const resumesTable = pgTable("resumes", {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    userId: integer("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    originalFileName: varchar("original_file_name", { length: 255 }),
+    storageUrl: text("storage_url"),
+    parsedData: jsonb("parsed_data"), // Stores the extracted JSON from the resume
+    atsScore: integer("ats_score"),
+    summary: text("summary"), // AI generated summary
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const chatsTable = pgTable("chats", {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    userId: integer("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    title: varchar("title", { length: 255 }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const messagesTable = pgTable("messages", {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    chatId: integer("chat_id").notNull().references(() => chatsTable.id, { onDelete: "cascade" }),
+    role: varchar("role", { length: 50 }).notNull(), // 'user', 'assistant', 'system', 'tool'
+    content: text("content"),
+    toolCalls: jsonb("tool_calls"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
 });

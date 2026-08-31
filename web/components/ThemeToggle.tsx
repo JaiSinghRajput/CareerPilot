@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { Sun, Moon } from "lucide-react";
 
 const THEME_EVENT = "theme-change";
 
@@ -41,7 +42,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="theme-toggle"
+      className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all cursor-pointer text-gray-700 dark:text-gray-300 hover:scale-105 active:scale-95"
       aria-label={
         darkMode ? "Switch to light mode" : "Switch to dark mode"
       }
@@ -49,7 +50,7 @@ export default function ThemeToggle() {
         darkMode ? "Switch to light mode" : "Switch to dark mode"
       }
     >
-      {darkMode ? "☀️" : "🌙"}
+      {darkMode ? <Sun className="w-5 h-5 text-orange-400" /> : <Moon className="w-5 h-5 text-blue-500" />}
     </button>
   );
 }

@@ -1,0 +1,51 @@
+@startuml
+
+skinparam {
+    DefaultFontName Arial
+    RoundCorner 10
+    ParticipantBackgroundColor #F5EEF8
+    ParticipantBorderColor #A569BD
+    BoxBackgroundColor #FBF7FC
+    BoxBorderColor #A569BD
+    ArrowColor #555555
+}
+
+title AI Job Search — MCP Request Flow
+
+actor User
+
+participant "Frontend\n(Next.js)" as Frontend
+participant "Express\nBackend" as Backend
+participant "AI Gateway" as Gateway
+participant "Local LLM" as LLM
+
+box "MCP Layer" #FBF7FC
+    participant "MCP Client" as MCP
+    participant "Job Search\nMCP Server" as JobServer
+end box
+
+User -> Frontend : 1. Submit Request\n"Find Jobs"
+
+Frontend -> Backend : 2. POST /api/chat
+
+Backend -> Gateway : 3. Forward Request
+
+Gateway -> LLM : 4. Analyze Intent & Prompt
+
+LLM -> MCP : 5. Request Tool\nsearch_jobs()
+
+MCP -> JobServer : 6. Execute Search Query
+
+JobServer --> MCP : 7. Return Job Data JSON
+
+MCP --> LLM : 8. Provide Tool Results
+
+LLM --> Gateway : 9. Generate Human Response
+
+Gateway --> Backend : 10. Return Formatted Answer
+
+Backend --> Frontend : 11. Response Payload
+
+Frontend --> User : 12. Render UI
+
+@enduml

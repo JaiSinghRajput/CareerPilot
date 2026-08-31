@@ -1,0 +1,37 @@
+@startuml
+skinparam {
+  RoundCorner 10
+  DefaultFontName Arial
+  ArrowColor #333333
+  BorderColor #2C3E50
+  BackgroundColor #FFFFFF
+  ActivityBackgroundColor #ECF0F1
+  ActivityDiamondBackgroundColor #F9E79F
+}
+
+start
+:User lands on CareerPilot AI;
+:Register/Login via Clerk Auth;
+:Complete Onboarding (Connect GitHub/LinkedIn);
+
+fork
+    :Module 1: AI Resume Builder;
+    :Upload existing Resume or enter data manually;
+    :AI parses data and optimizes ATS keywords;
+    :Generate Professional Summary & Experiences;
+fork again
+    :Module 2: AI Job Explorer;
+    :Search for Jobs/Internships;
+    :Compare Resume against Job Description;
+    :View Match Score & Missing Skills;
+fork again
+    :Module 3: Project Recommendations;
+    :AI analyzes current skills & GitHub;
+    :Generate personalized portfolio projects;
+    :Provide Learning Roadmap;
+end fork
+
+:User applies for a Job;
+:Review progress on Main Dashboard;
+stop
+@enduml
