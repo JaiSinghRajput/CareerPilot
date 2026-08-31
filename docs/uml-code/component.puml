@@ -1,0 +1,68 @@
+@startuml
+skinparam {
+  RoundCorner 10
+  DefaultFontName Arial
+  ComponentBackgroundColor #EBDEF0
+  ComponentBorderColor #8E44AD
+  ArrowColor #333333
+}
+
+package "Client Tier" {
+  component "Next.js Web Frontend" as Frontend
+}
+
+package "API Tier" {
+  component "Express API Gateway" as API
+  component "User & Auth Controller" as AuthCtrl
+  component "File Processing Controller" as FileCtrl
+}
+
+package "AI Orchestration Tier" {
+  component "AI Gateway" as AIGateway
+  component "MCP Client" as MCPClient
+}
+
+package "AI Model Tier" {
+  component "Local LLM Node" as LLM
+}
+
+package "MCP Tool Servers (Ecosystem)" {
+  component "Job Search MCP" as JobMCP
+  component "Resume Parser MCP" as ResumeMCP
+  component "ATS Analyzer MCP" as ATSMCP
+  component "GitHub/Web Scraper MCP" as WebMCP
+}
+
+package "Data & Storage Tier" {
+  database "PostgreSQL DB" as Postgres
+  database "Object Storage (PDFs)" as S3
+  database "Qdrant Vector DB" as Qdrant
+}
+
+package "External Services" {
+  component "Clerk Authentication" as Clerk
+}
+
+Frontend --> API : REST/HTTPS
+Frontend --> Clerk : OAuth Flow
+
+API --> AuthCtrl
+API --> FileCtrl
+API --> AIGateway
+
+AuthCtrl --> Postgres
+FileCtrl --> S3
+FileCtrl --> Postgres
+
+AIGateway --> LLM : Prompt & Context
+AIGateway --> MCPClient : Tool Orchestration
+
+MCPClient --> JobMCP
+MCPClient --> ResumeMCP
+MCPClient --> ATSMCP
+MCPClient --> WebMCP
+
+JobMCP --> Postgres
+ResumeMCP --> S3
+ATSMCP --> Qdrant : RAG Vector Search
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+skinparam {
+  RoundCorner 10
+  DefaultFontName Arial
+  ArrowColor #333333
+  BorderColor #2C3E50
+  BackgroundColor #FFFFFF
+  UsecaseBackgroundColor #ECF0F1
+  ActorBackgroundColor #3498DB
+  PackageBackgroundColor #FBFCFC
+}
+left to right direction
+
+actor "Job Seeker / Student" as User
+actor "Clerk Authentication" as Clerk
+actor "Local LLM via MCP" as AI
+
+package "CareerPilot AI - Complete System" {
+    
+    package "Module 1: Authentication & Profile" {
+        usecase "Register & Login" as UC_Auth
+        usecase "Manage Connected Accounts (GitHub/LinkedIn)" as UC_Profile
+    }
+    
+    package "Module 2: AI Resume Builder" {
+        usecase "Upload & Parse Resume" as UC_Upload
+        usecase "Generate AI Summary & Experience" as UC_GenRes
+        usecase "Calculate ATS Score" as UC_ATS
+    }
+    
+    package "Module 3: AI Job Explorer" {
+        usecase "Search Jobs & Internships" as UC_JobSearch
+        usecase "Match Resume vs Job Description" as UC_JDMatch
+        usecase "Track Job Applications" as UC_TrackJob
+    }
+    
+    package "Module 4: Project Recommendation" {
+        usecase "Get Personalized Project Ideas" as UC_Projects
+        usecase "Generate Learning Roadmap" as UC_Roadmap
+    }
+}
+
+User --> UC_Auth
+User --> UC_Profile
+User --> UC_Upload
+User --> UC_GenRes
+User --> UC_ATS
+User --> UC_JobSearch
+User --> UC_JDMatch
+User --> UC_TrackJob
+User --> UC_Projects
+User --> UC_Roadmap
+
+UC_Auth --> Clerk : <<verifies>>
+UC_GenRes --> AI : <<delegates>>
+UC_ATS --> AI : <<delegates>>
+UC_JDMatch --> AI : <<delegates>>
+UC_Projects --> AI : <<delegates>>
+
+@enduml

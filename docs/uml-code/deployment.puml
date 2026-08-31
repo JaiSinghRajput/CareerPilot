@@ -1,0 +1,62 @@
+@startuml
+skinparam {
+  RoundCorner 10
+  DefaultFontName Arial
+  NodeBackgroundColor #E8F8F5
+  NodeBorderColor #17A589
+  CloudBackgroundColor #FEF9E7
+}
+
+node "Client Device" {
+  node "Modern Web Browser" {
+    artifact "CareerPilot React SPA\n(Next.js Client-Side)" as SPA
+  }
+}
+
+node "Cloud / Hosting Infrastructure" {
+  
+  node "Frontend Container" {
+    component "Next.js Server (SSR)" as NextServer
+  }
+
+  node "Backend Services Cluster" {
+    component "Node.js Express Server" as ExpressServer
+    component "AI Gateway Service" as AIGateway
+  }
+
+  node "MCP Ecosystem Cluster" {
+    component "Job Search MCP Server" as MCP1
+    component "Resume/ATS MCP Server" as MCP2
+  }
+
+  node "AI Compute Node (GPU)" {
+    artifact "Llama 3.1 8B Instruct Model" as Llama
+  }
+
+  node "Data Persistence Tier" {
+    database "PostgreSQL Database\n(Primary Data)" as DB
+    database "Qdrant Vector Database\n(Embeddings)" as VecDB
+    database "S3 / MinIO\n(Object Storage)" as Blob
+  }
+}
+
+cloud "External SaaS Providers" {
+  component "Clerk (Auth)" as Clerk
+}
+
+SPA --> NextServer : HTTPS
+SPA --> ExpressServer : REST API (HTTPS)
+SPA --> Clerk : OAuth / Tokens
+
+NextServer --> ExpressServer : Internal API Calls
+ExpressServer --> DB : TCP/5432
+ExpressServer --> Blob : S3 API
+ExpressServer --> AIGateway : Internal gRPC/REST
+
+AIGateway --> Llama : Local API
+AIGateway --> MCP1 : MCP Protocol
+AIGateway --> MCP2 : MCP Protocol
+
+MCP2 --> VecDB : Vector Search
+
+@enduml

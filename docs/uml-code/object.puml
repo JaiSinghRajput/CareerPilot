@@ -1,0 +1,40 @@
+@startuml
+skinparam {
+  RoundCorner 10
+  DefaultFontName Arial
+  ObjectBackgroundColor #EBF5FB
+  ObjectBorderColor #2980B9
+}
+
+object "student1 : User" as user {
+  id = 1042
+  name = "Alice Smith"
+  careerStage = "Fresher"
+  githubUrl = "github.com/alicesmith"
+}
+
+object "resume1 : Resume" as resume {
+  id = 5099
+  atsScore = 85
+  aiSummary = "Motivated Computer Science graduate..."
+}
+
+object "jobApp1 : JobApplication" as job {
+  id = 702
+  jobTitle = "Junior Frontend Developer"
+  companyName = "TechCorp Inc."
+  matchScore = 92
+  status = "Applied"
+}
+
+object "projRec1 : ProjectRecommendation" as proj {
+  id = 301
+  title = "React E-Commerce Dashboard"
+  difficulty = "Intermediate"
+}
+
+user "1" -- "owns" resume
+user "1" -- "tracks" job
+user "1" -- "received" proj
+
+@enduml

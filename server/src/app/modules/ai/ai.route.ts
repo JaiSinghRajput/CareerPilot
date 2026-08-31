@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { requireAuth } from '@clerk/express';
+import { requireAuth } from '../../middlewares/auth.js';
 import multer from 'multer';
 import { AIController } from './ai.controller.js';
 
@@ -11,8 +11,8 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
 });
 
-router.post('/chat', requireAuth(), AIController.chat);
-router.post('/resume/upload', requireAuth(), upload.single('resume'), AIController.uploadResume);
-router.post('/resume/:id/analyze', requireAuth(), AIController.analyzeResume);
+router.post('/chat', requireAuth, AIController.chat);
+router.post('/resume/upload', requireAuth, upload.single('resume'), AIController.uploadResume);
+router.post('/resume/:id/analyze', requireAuth, AIController.analyzeResume);
 
 export default router;
