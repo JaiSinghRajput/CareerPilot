@@ -1,0 +1,70 @@
+@startuml
+skinparam {
+  RoundCorner 10
+  DefaultFontName Arial
+  ClassBackgroundColor #FDFEFE
+  ClassBorderColor #1ABC9C
+  ArrowColor #333333
+}
+
+class User {
+  +Integer id
+  +String clerkId
+  +String name
+  +String email
+  +String careerStage
+  +String githubUrl
+  +String linkedInUrl
+  +Timestamp createdAt
+}
+
+class Resume {
+  +Integer id
+  +Integer userId
+  +JSON parsedData
+  +Integer atsScore
+  +String aiSummary
+  +Timestamp updatedAt
+}
+
+class JobApplication {
+  +Integer id
+  +Integer userId
+  +String jobTitle
+  +String companyName
+  +String jobDescription
+  +Integer matchScore
+  +String status
+}
+
+class ProjectRecommendation {
+  +Integer id
+  +Integer userId
+  +String title
+  +String difficulty
+  +String description
+  +JSON requiredSkills
+}
+
+class ChatSession {
+  +Integer id
+  +Integer userId
+  +String title
+  +Timestamp createdAt
+}
+
+class ChatMessage {
+  +Integer id
+  +Integer chatSessionId
+  +String role
+  +String content
+  +JSON mcpToolCalls
+}
+
+User "1" -- "0..*" Resume : owns >
+User "1" -- "0..*" JobApplication : tracks >
+User "1" -- "0..*" ProjectRecommendation : receives >
+User "1" -- "0..*" ChatSession : initiates >
+ChatSession "1" -- "0..*" ChatMessage : contains >
+
+@enduml

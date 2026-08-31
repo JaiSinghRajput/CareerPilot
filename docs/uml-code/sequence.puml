@@ -1,0 +1,60 @@
+@startuml
+skinparam {
+  RoundCorner 10
+  DefaultFontName Arial
+  ArrowColor #333333
+  ParticipantBackgroundColor #D6EAF8
+  ParticipantBorderColor #2980B9
+  DatabaseBackgroundColor #FAD7A1
+  DatabaseBorderColor #F39C12
+}
+
+actor "User" as User
+participant "Next.js\nFrontend" as Front
+participant "Express.js\nAPI Backend" as API
+participant "AI Gateway" as Gateway
+participant "Local LLM" as LLM
+participant "MCP Client" as MCP
+participant "Job Search\nMCP Server" as JobTool
+database "PostgreSQL\nDatabase" as DB
+
+User -> Front : Request Job Search / Advice
+activate Front
+Front -> API : POST /api/chat
+activate API
+
+API -> Gateway : Forward Request
+activate Gateway
+
+Gateway -> LLM : Prompt with context
+activate LLM
+
+LLM -> MCP : Tool Request: SearchJobs(query)
+activate MCP
+
+MCP -> JobTool : Execute SearchJobs Tool
+activate JobTool
+JobTool --> MCP : Return Job Listings JSON
+deactivate JobTool
+
+MCP --> LLM : Tool Result JSON
+deactivate MCP
+
+LLM -> LLM : Synthesize natural response\nusing Job Listings
+LLM --> Gateway : Final Response Text
+deactivate LLM
+
+Gateway -> DB : Save Chat History
+activate DB
+DB --> Gateway : Success
+deactivate DB
+
+Gateway --> API : Stream/Return AI Response
+deactivate Gateway
+
+API --> Front : JSON { success, response }
+deactivate API
+
+Front --> User : Display Job Advice
+deactivate Front
+@enduml
