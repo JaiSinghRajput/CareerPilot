@@ -139,7 +139,7 @@ export default function Home() {
 
             <div className="hero-actions">
               <Link
-                href={isSignedIn ? "#features" : "/sign-up"}
+                href={isSignedIn ? "/dashboard" : "/sign-up"}
                 className="primary-button flex items-center gap-2"
               >
                 {isSignedIn ? "Explore Your Career" : "Start Your Journey"} <ArrowRight className="w-4 h-4" />
