@@ -20,6 +20,8 @@ export const resumesTable = pgTable("resumes", {
     parsedData: jsonb("parsed_data"), // Stores the extracted JSON from the resume
     atsScore: integer("ats_score"),
     summary: text("summary"), // AI generated summary
+    feedback: jsonb("feedback"), // AI generated feedback array
+    isBuilt: boolean("is_built").notNull().default(false), // Flag for resumes built from LinkedIn/GitHub
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

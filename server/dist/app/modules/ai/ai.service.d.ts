@@ -13,5 +13,31 @@ export declare class AIService {
         summary: string;
         feedback: string[];
     }>;
+    static getResumes(clerkId: string): Promise<{
+        id: number;
+        userId: number;
+        originalFileName: string | null;
+        storageUrl: string | null;
+        parsedData: unknown;
+        atsScore: number | null;
+        summary: string | null;
+        feedback: unknown;
+        isBuilt: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }[]>;
+    static getResumeById(id: number, clerkId: string): Promise<{
+        id: number;
+        userId: number;
+        originalFileName: string | null;
+        storageUrl: string | null;
+        parsedData: unknown;
+        atsScore: number | null;
+        summary: string | null;
+        feedback: unknown;
+        isBuilt: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
 }
 //# sourceMappingURL=ai.service.d.ts.map

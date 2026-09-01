@@ -1,4 +1,5 @@
 import { AIService } from './ai.service.js';
+import { getAuth } from '@clerk/express';
 export class AIController {
     static async chat(req, res) {
         try {
@@ -7,7 +8,7 @@ export class AIController {
                 res.status(400).json({ success: false, message: 'Prompt is required' });
                 return;
             }
-            const clerkId = req.auth?.userId;
+            const { userId: clerkId } = getAuth(req);
             if (!clerkId) {
                 res.status(401).json({ success: false, message: 'Unauthorized' });
                 return;
@@ -29,7 +30,7 @@ export class AIController {
                 res.status(400).json({ success: false, message: 'No file uploaded' });
                 return;
             }
-            const clerkId = req.auth?.userId;
+            const { userId: clerkId } = getAuth(req);
             if (!clerkId) {
                 res.status(401).json({ success: false, message: 'Unauthorized' });
                 return;
@@ -55,7 +56,7 @@ export class AIController {
                 res.status(400).json({ success: false, message: 'Invalid resume ID' });
                 return;
             }
-            const clerkId = req.auth?.userId;
+            const { userId: clerkId } = getAuth(req);
             if (!clerkId) {
                 res.status(401).json({ success: false, message: 'Unauthorized' });
                 return;
@@ -70,6 +71,48 @@ export class AIController {
         catch (error) {
             console.error('Analyze error:', error);
             res.status(500).json({ success: false, message: error.message || 'Failed to analyze resume' });
+        }
+    }
+    static async getResumes(req, res) {
+        try {
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            const resumes = await AIService.getResumes(clerkId);
+            res.status(200).json({
+                success: true,
+                data: resumes
+            });
+        }
+        catch (error) {
+            console.error('Get resumes error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to get resumes' });
+        }
+    }
+    static async getResumeById(req, res) {
+        try {
+            const { id } = req.params;
+            const resumeId = parseInt(id || '', 10);
+            if (isNaN(resumeId)) {
+                res.status(400).json({ success: false, message: 'Invalid resume ID' });
+                return;
+            }
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            const resume = await AIService.getResumeById(resumeId, clerkId);
+            res.status(200).json({
+                success: true,
+                data: resume
+            });
+        }
+        catch (error) {
+            console.error('Get resume by id error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to get resume' });
         }
     }
 }

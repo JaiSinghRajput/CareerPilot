@@ -1,8 +1,10 @@
+import 'dotenv/config';
 import app from './app.js';
-import dotenv from 'dotenv';
 
-// Load environment variables
-dotenv.config();
+console.log("--- ENV DEBUG ---");
+console.log("CLERK_SECRET_KEY exists:", !!process.env.CLERK_SECRET_KEY);
+console.log("PORT:", process.env.PORT);
+console.log("-----------------");
 
 const PORT = process.env.PORT || 5000;
 

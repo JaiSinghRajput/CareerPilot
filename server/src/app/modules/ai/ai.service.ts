@@ -1,6 +1,6 @@
 import db from '../../../db/db.js';
 import { usersTable, chatsTable, messagesTable, resumesTable } from '../../../db/schema.js';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import { aiGateway, askAI } from '../../../ai/index.js';
 import { CloudinaryService } from '../../utils/cloudinary.js';
 import type { Message } from 'agenix';
@@ -67,9 +67,10 @@ export class AIService {
     const dbUserId = userRows[0]!.id;
 
     // 1. Extract text from PDF
-    const pdfParseModule: any = await import('pdf-parse');
-    const pdfParse = pdfParseModule.default || pdfParseModule;
-    const pdfData = await (pdfParse as any)(fileBuffer);
+    const { PDFParse } = await import('pdf-parse');
+    const parser = new PDFParse({ data: fileBuffer });
+    const pdfData = await parser.getText();
+    await parser.destroy();
     const extractedText = pdfData.text;
 
     if (!extractedText || extractedText.trim() === '') {
@@ -78,12 +79,19 @@ export class AIService {
 
     // 2. Use AI to extract structured JSON data
     const parsePrompt = `Extract the following structured information from the provided resume text.
-Return ONLY valid JSON matching this structure exactly (no markdown formatting, no code blocks around the JSON):
+Return ONLY valid JSON matching this structure exactly (no markdown formatting, no code blocks around the JSON).
+Always use exactly these keys for experience and education. Do not invent new keys like 'class' or 'result'. Map them to the provided keys.
+For experience, extract all the detailed bullet points, achievements, and responsibilities into the 'bulletPoints' array so NO information is lost.
+Infer a few compatible job roles for the candidate based on their profile.
+
 {
   "name": "Full Name",
+  "location": "City, Country or Unknown",
   "skills": ["skill1", "skill2"],
-  "experience": [{"company": "Name", "role": "Title", "duration": "Dates"}],
-  "education": [{"institution": "Name", "degree": "Title"}]
+  "compatibleJobRoles": ["Role 1", "Role 2", "Role 3"],
+  "experience": [{"company": "Name", "role": "Title", "duration": "Dates", "bulletPoints": ["point 1", "point 2"]}],
+  "education": [{"institution": "Name", "degree": "Title"}],
+  "projects": [{"name": "Project Name", "description": "Brief description", "technologies": ["tech1", "tech2"], "link": "url or null"}]
 }
 
 Resume Text:
@@ -162,14 +170,20 @@ ${extractedText.substring(0, 4000)} // Limit length if necessary
       throw new Error('Resume has no parsed data to analyze');
     }
 
-    const analysisPrompt = `Analyze the following structured resume data.
+const analysisPrompt = `Analyze the following structured resume data.
 Evaluate the candidate's skills, experience, and overall profile.
-Provide a professional summary, an ATS score out of 100, and a list of specific feedback or improvements.
+Provide a professional summary, an ATS score out of 100, and a highly detailed, personalized feedback array. 
+Your feedback should point out specific missing areas, weak bullet points, or sections that need improvement. Provide actionable advice for the user to improve this specific resume.
 Return ONLY valid JSON matching this structure exactly (no markdown formatting, no code blocks):
 {
   "atsScore": 85,
   "summary": "A concise professional summary of the candidate...",
-  "feedback": ["Feedback point 1", "Feedback point 2"]
+  "feedback": [
+    {
+      "title": "Actionable Title (e.g. Add Quantifiable Metrics)",
+      "description": "Detailed explanation of what is wrong and how to fix it..."
+    }
+  ]
 }
 
 Resume Data:
@@ -207,9 +221,56 @@ ${JSON.stringify(resume.parsedData)}
       .set({
         atsScore: analysisResult.atsScore,
         summary: analysisResult.summary,
+        feedback: analysisResult.feedback,
       })
       .where(eq(resumesTable.id, resumeId));
 
     return analysisResult;
+  }
+
+  public static async getResumes(clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) {
+      throw new Error('User not found in database');
+    }
+    const dbUserId = userRows[0]!.id;
+
+    const resumes = await db.select().from(resumesTable).where(eq(resumesTable.userId, dbUserId)).orderBy(desc(resumesTable.createdAt));
+    return resumes;
+  }
+
+  public static async getResumeById(id: number, clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) {
+      throw new Error('User not found in database');
+    }
+    const dbUserId = userRows[0]!.id;
+
+    const resumeRows = await db.select().from(resumesTable).where(eq(resumesTable.id, id)).limit(1);
+    const resume = resumeRows[0];
+
+    if (!resume || resume.userId !== dbUserId) {
+      throw new Error('Resume not found or unauthorized');
+    }
+
+    return resume;
+  }
+
+  public static async deleteResume(id: number, clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) {
+      throw new Error('User not found in database');
+    }
+    const dbUserId = userRows[0]!.id;
+
+    const resumeRows = await db.select().from(resumesTable).where(eq(resumesTable.id, id)).limit(1);
+    const resume = resumeRows[0];
+
+    if (!resume || resume.userId !== dbUserId) {
+      throw new Error('Resume not found or unauthorized');
+    }
+
+    await db.delete(resumesTable).where(eq(resumesTable.id, id));
+    return true;
   }
 }

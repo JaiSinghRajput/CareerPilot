@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { requireAuth } from '@clerk/express';
+import { requireAuth } from '../../middlewares/auth.js';
 import multer from 'multer';
 import { AIController } from './ai.controller.js';
 const router = express.Router();
@@ -8,8 +8,10 @@ const upload = multer({
     storage: multer.memoryStorage(),
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
 });
-router.post('/chat', requireAuth(), AIController.chat);
-router.post('/resume/upload', requireAuth(), upload.single('resume'), AIController.uploadResume);
-router.post('/resume/:id/analyze', requireAuth(), AIController.analyzeResume);
+router.post('/chat', requireAuth, AIController.chat);
+router.get('/resumes', requireAuth, AIController.getResumes);
+router.post('/resume/upload', requireAuth, upload.single('resume'), AIController.uploadResume);
+router.post('/resume/:id/analyze', requireAuth, AIController.analyzeResume);
+router.get('/resume/:id', requireAuth, AIController.getResumeById);
 export default router;
 //# sourceMappingURL=ai.route.js.map

@@ -279,6 +279,36 @@ export declare const resumesTable: import("drizzle-orm/pg-core").PgTableWithColu
             identity: undefined;
             generated: undefined;
         }>;
+        feedback: import("drizzle-orm/pg-core").PgBuildColumn<"resumes", import("drizzle-orm/pg-core").PgJsonbBuilder, {
+            name: string;
+            tableName: "resumes";
+            dataType: "object json";
+            data: unknown;
+            driverParam: unknown;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        isBuilt: import("drizzle-orm/pg-core").PgBuildColumn<"resumes", import("drizzle-orm/pg-core").SetHasDefault<import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgBooleanBuilder>>, {
+            name: string;
+            tableName: "resumes";
+            dataType: "boolean";
+            data: boolean;
+            driverParam: boolean;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
         createdAt: import("drizzle-orm/pg-core").PgBuildColumn<"resumes", import("drizzle-orm/pg-core").SetHasDefault<import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgTimestampBuilder>>, {
             name: string;
             tableName: "resumes";

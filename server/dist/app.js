@@ -10,7 +10,10 @@ app.use(cors());
 app.use('/api/v1/webhooks', webhookRoutes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(clerkMiddleware());
+app.use(clerkMiddleware({
+    publishableKey: process.env.CLERK_PUBLISHABLE_KEY || '',
+    secretKey: process.env.CLERK_SECRET_KEY || ''
+}));
 // Application Routes
 app.use('/api/v1', routes);
 // Root route

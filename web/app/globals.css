@@ -940,6 +940,10 @@ a {
     display: none;
   }
 
+  .nav-actions {
+    display: none;
+  }
+
   .sign-in-link {
     display: none;
   }
@@ -957,12 +961,17 @@ a {
   }
 
   .hero-actions {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .hero-actions .primary-button,
   .hero-actions .secondary-button {
-    width: 100%;
+    width: auto;
+    min-height: 48px;
+    padding: 0 20px;
+    font-size: 14px;
   }
 
   .features-section,
@@ -1028,6 +1037,7 @@ a {
   .cta-card {
     padding: 65px 20px;
   }
+}
 
 /* =========================================
  Theme Toggle
@@ -1061,4 +1071,59 @@ a {
   transform: translateY(-2px);
   background: var(--surface-hover);
 }
+
+/* =========================================
+   Print Styles for Resume Templates
+========================================= */
+
+@media print {
+  /* Hide Next.js dev overlays if present */
+  nextjs-portal {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Force page size to A4 */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  /* Hide everything by default except what we explicitly show */
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Ensure the printable area expands correctly */
+  .print\:w-full {
+    width: 100% !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .print\:p-0 {
+    padding: 0 !important;
+  }
+
+  .print\:m-0 {
+    margin: 0 !important;
+  }
+
+  .print\:py-0 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .print\:shadow-none {
+    box-shadow: none !important;
+  }
 }

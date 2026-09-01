@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
-import { FileText, Lightbulb, Search, MessageSquare, Mic, ArrowRight, Sparkles, CheckCircle, Zap } from "lucide-react";
+import { FileText, Lightbulb, Search, MessageSquare, Mic, ArrowRight, Sparkles, CheckCircle, Zap, Menu, X } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import UserProfile from "@/components/UserProfile";
 
@@ -62,6 +63,7 @@ const steps = [
 
 export default function Home() {
   const { isSignedIn, user } = useUser();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
     <main className="landing-page">
       {/* Navigation */}
@@ -71,13 +73,12 @@ export default function Home() {
             Career<span>Pilot</span> <b>AI</b>
           </Link>
 
-          <div className="nav-links">
+          <div className="nav-links hidden md:flex items-center gap-8">
             <a href="#features">Features</a>
             <a href="#how-it-works">How It Works</a>
           </div>
 
-          <div className="nav-actions">
-
+          <div className="nav-actions hidden md:flex items-center gap-3">
             <ThemeToggle />
 
             {isSignedIn ? (
@@ -100,7 +101,37 @@ export default function Home() {
               </>
             )}
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <div className="md:hidden flex items-center gap-4">
+            <ThemeToggle />
+            {isSignedIn && <UserProfile />}
+            <button
+              className="text-text-primary p-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-22 left-0 w-full bg-background border-b border-border shadow-lg p-6 flex flex-col gap-6">
+            <a href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium">Features</a>
+            <a href="#how-it-works" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium">How It Works</a>
+            {!isSignedIn && (
+              <div className="flex flex-col gap-4 mt-2">
+                <Link href="/sign-in" onClick={() => setIsMobileMenuOpen(false)} className="text-center font-medium py-3 border border-border rounded-xl">
+                  Sign In
+                </Link>
+                <Link href="/sign-up" onClick={() => setIsMobileMenuOpen(false)} className="primary-button">
+                  Get Started
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
       </nav>
 
       {/* Hero */}
@@ -139,7 +170,7 @@ export default function Home() {
 
             <div className="hero-actions">
               <Link
-                href={isSignedIn ? "#features" : "/sign-up"}
+                href={isSignedIn ? "/dashboard" : "/sign-up"}
                 className="primary-button flex items-center gap-2"
               >
                 {isSignedIn ? "Explore Your Career" : "Start Your Journey"} <ArrowRight className="w-4 h-4" />

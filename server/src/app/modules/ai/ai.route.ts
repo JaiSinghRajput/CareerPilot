@@ -12,7 +12,10 @@ const upload = multer({
 });
 
 router.post('/chat', requireAuth, AIController.chat);
+router.get('/resumes', requireAuth, AIController.getResumes);
 router.post('/resume/upload', requireAuth, upload.single('resume'), AIController.uploadResume);
 router.post('/resume/:id/analyze', requireAuth, AIController.analyzeResume);
+router.get('/resume/:id', requireAuth, AIController.getResumeById);
+router.delete('/resume/:id', requireAuth, AIController.deleteResume);
 
 export default router;

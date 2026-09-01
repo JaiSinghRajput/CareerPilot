@@ -1,0 +1,822 @@
+[
+    {
+        "id": "ACoAADw1hcgBMsNDFLCD-H7SDgj3Wwg0u4jl9qw",
+        "publicIdentifier": "jaisingh00",
+        "linkedinUrl": "https://www.linkedin.com/in/jaisingh00",
+        "firstName": "JAI",
+        "lastName": "SINGH",
+        "emails": [],
+        "headline": "Full-stack Developer @ Dream Wedding Hub | SQL, Next.js",
+        "websites": [
+            "https://tech-jai.dev"
+        ],
+        "openToWork": false,
+        "hiring": false,
+        "premium": false,
+        "influencer": false,
+        "memorialized": false,
+        "creator": false,
+        "location": {
+            "linkedinText": "Alwar, Rajasthan, India",
+            "countryCode": "IN",
+            "parsed": {
+                "text": "Alwar, India",
+                "countryCode": "IN",
+                "regionCode": null,
+                "country": "India",
+                "countryFull": "India",
+                "state": "Rajasthan",
+                "city": "Alwar"
+            }
+        },
+        "objectUrn": "1010140616",
+        "registeredAt": "2022-06-16T07:33:01.701Z",
+        "topSkills": [],
+        "connectionsCount": 465,
+        "followerCount": 470,
+        "verified": true,
+        "about": "Dream Wedding Hub benefits from contributions in full-stack development, leveraging expertise in SQL, Next.js, and automation. Presently pursuing a Bachelor of Technology in Computer Science at MODREN INSTITUTE OF TECHNOLOGY AND RESEARCH CENTER, with graduation anticipated in 2027. Previous roles as a Frontend Developer at Uzence Design Studio and Web Developer at Vedaz provided valuable experience in creating user-focused web solutions. Enthusiastic about applying technical skills to develop efficient, scalable, and innovative web applications.",
+        "currentPosition": [
+            {
+                "position": "Full-stack Developer",
+                "location": "Alwar",
+                "employmentType": "Internship",
+                "workplaceType": null,
+                "companyName": "Dream Wedding Hub Private Limited",
+                "companyLinkedinUrl": "https://www.linkedin.com/company/dream-wedding-hub/",
+                "companyId": "100071824",
+                "duration": "10 mos",
+                "description": null,
+                "skills": [
+                    "Problem Solving",
+                    "Jenkins",
+                    "Prisma ORM",
+                    "Data Scraping",
+                    "Full-Stack Development",
+                    "Next.js",
+                    "DevOps",
+                    "SQL",
+                    "Python (Programming Language)",
+                    "Back-End Web Development"
+                ],
+                "startDate": {
+                    "month": "Dec",
+                    "year": 2025,
+                    "text": "Dec 2025"
+                },
+                "endDate": {
+                    "text": "Present"
+                },
+                "companyLogo": {
+                    "url": "https://media.licdn.com/dms/image/v2/D4D0BAQFkq5bvHZM53Q/company-logo_400_400/company-logo_400_400/0/1697690113611/dream_wedding_hub_logo?e=1789603200&v=beta&t=X5P5B5YM7zw_BV8IlWNDgG_3w_7hr_cs07NF9COpCow",
+                    "sizes": [
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D4D0BAQFkq5bvHZM53Q/company-logo_400_400/company-logo_400_400/0/1697690113611/dream_wedding_hub_logo?e=1789603200&v=beta&t=X5P5B5YM7zw_BV8IlWNDgG_3w_7hr_cs07NF9COpCow",
+                            "width": 400,
+                            "height": 400
+                        },
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D4D0BAQFkq5bvHZM53Q/company-logo_200_200/company-logo_200_200/0/1697690113611/dream_wedding_hub_logo?e=1789603200&v=beta&t=qvfi_PWpHLnht0EuN1RB1v1RlWcLFyhF49PXmGClVTs",
+                            "width": 200,
+                            "height": 200
+                        },
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D4D0BAQFkq5bvHZM53Q/company-logo_100_100/company-logo_100_100/0/1697690113611/dream_wedding_hub_logo?e=1789603200&v=beta&t=DOYpnoeHUVdjTkrib4BsUDpulO6gpjR-C9lNAl-bmQI",
+                            "width": 100,
+                            "height": 100
+                        }
+                    ]
+                },
+                "companyUniversalName": "dream-wedding-hub"
+            }
+        ],
+        "profileTopEducation": [
+            {
+                "schoolName": "MODREN INSTITUTE OF TECHNOLOGY AND RESEARCH CENTER ",
+                "schoolLinkedinUrl": "https://www.linkedin.com/search/results/all/?keywords=MODREN+INSTITUTE+OF+TECHNOLOGY+AND+RESEARCH+CENTER+",
+                "schoolId": null,
+                "degree": "Bachelor of Technology - BTech",
+                "fieldOfStudy": "Computer Science",
+                "period": "Sep 2023 - Aug 2027",
+                "startDate": {
+                    "month": "Sep",
+                    "year": 2023,
+                    "text": "Sep 2023"
+                },
+                "endDate": {
+                    "month": "Aug",
+                    "year": 2027,
+                    "text": "Aug 2027"
+                },
+                "schoolLogo": null
+            }
+        ],
+        "profileActions": [],
+        "profilePicture": {
+            "url": "https://media.licdn.com/dms/image/v2/D4D03AQH9sYkJy2MJNg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1731818142281?e=1789603200&v=beta&t=OoO7uvmhCmK_8Em9XEQ4y6davHx12IC0vlNWjm7jyBo",
+            "sizes": [
+                {
+                    "url": "https://media.licdn.com/dms/image/v2/D4D03AQH9sYkJy2MJNg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1731818142281?e=1789603200&v=beta&t=OoO7uvmhCmK_8Em9XEQ4y6davHx12IC0vlNWjm7jyBo",
+                    "width": 800,
+                    "height": 800
+                },
+                {
+                    "url": "https://media.licdn.com/dms/image/v2/D4D03AQH9sYkJy2MJNg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1731818142247?e=1789603200&v=beta&t=CbnZdDRl_aKC2p-Crv4G1GZ27Mg6vEf7dRV8usW2vPw",
+                    "width": 400,
+                    "height": 400
+                },
+                {
+                    "url": "https://media.licdn.com/dms/image/v2/D4D03AQH9sYkJy2MJNg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1731818142247?e=1789603200&v=beta&t=iGaZf48LZnXqAVisng9iXF1PG2p-N6PYCB5bX63Unzc",
+                    "width": 200,
+                    "height": 200
+                },
+                {
+                    "url": "https://media.licdn.com/dms/image/v2/D4D03AQH9sYkJy2MJNg/profile-displayphoto-shrink_100_100/profile-displayphoto-shrink_100_100/0/1731818142247?e=1789603200&v=beta&t=xs524y_t8vO20pj8ThghbYBpHp-r75fcvH7v-Fmx4cs",
+                    "width": 100,
+                    "height": 100
+                }
+            ]
+        },
+        "coverPicture": {
+            "url": "https://media.licdn.com/dms/image/v2/D4D16AQFRgnuGSqfLRg/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1710737075102?e=1789603200&v=beta&t=affBFmgsXKnRgO6V7kafORo-7F-Bs5iIvQQpaovEo3k",
+            "sizes": [
+                {
+                    "url": "https://media.licdn.com/dms/image/v2/D4D16AQFRgnuGSqfLRg/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1710737075102?e=1789603200&v=beta&t=affBFmgsXKnRgO6V7kafORo-7F-Bs5iIvQQpaovEo3k",
+                    "width": 1080,
+                    "height": 270
+                },
+                {
+                    "url": "https://media.licdn.com/dms/image/v2/D4D16AQFRgnuGSqfLRg/profile-displaybackgroundimage-shrink_200_800/profile-displaybackgroundimage-shrink_200_800/0/1710737075102?e=1789603200&v=beta&t=44BYU6gX-QVqgt-dOkMoA-qxm80qMXrGL6lLT0DdrXQ",
+                    "width": 800,
+                    "height": 200
+                }
+            ]
+        },
+        "photo": "https://media.licdn.com/dms/image/v2/D4D03AQH9sYkJy2MJNg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1731818142281?e=1789603200&v=beta&t=OoO7uvmhCmK_8Em9XEQ4y6davHx12IC0vlNWjm7jyBo",
+        "profileLocales": [
+            {
+                "country": "US",
+                "language": "en"
+            }
+        ],
+        "primaryLocale": {
+            "country": "US",
+            "language": "en"
+        },
+        "multiLocaleHeadline": [
+            {
+                "headline": "Full-stack Developer @ Dream Wedding Hub | SQL, Next.js",
+                "locale": "en_US"
+            }
+        ],
+        "services": {
+            "description": "Web Development",
+            "media": [],
+            "servicesList": [],
+            "rating": null,
+            "requestUrl": "https://www.linkedin.com/in/jaisingh00/opportunities/services/request-proposal?servicePageVanityName=85495b33011858b246"
+        },
+        "experience": [
+            {
+                "position": "Full-stack Developer",
+                "location": "Alwar",
+                "employmentType": "Internship",
+                "workplaceType": null,
+                "companyName": "Dream Wedding Hub Private Limited",
+                "companyLinkedinUrl": "https://www.linkedin.com/company/dream-wedding-hub/",
+                "companyId": "100071824",
+                "duration": "10 mos",
+                "description": null,
+                "skills": [
+                    "Problem Solving",
+                    "Jenkins",
+                    "Prisma ORM",
+                    "Data Scraping",
+                    "Full-Stack Development",
+                    "Next.js",
+                    "DevOps",
+                    "SQL",
+                    "Python (Programming Language)",
+                    "Back-End Web Development"
+                ],
+                "startDate": {
+                    "month": "Dec",
+                    "year": 2025,
+                    "text": "Dec 2025"
+                },
+                "endDate": {
+                    "text": "Present"
+                },
+                "companyLogo": {
+                    "url": "https://media.licdn.com/dms/image/v2/D4D0BAQFkq5bvHZM53Q/company-logo_400_400/company-logo_400_400/0/1697690113611/dream_wedding_hub_logo?e=1789603200&v=beta&t=X5P5B5YM7zw_BV8IlWNDgG_3w_7hr_cs07NF9COpCow",
+                    "sizes": [
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D4D0BAQFkq5bvHZM53Q/company-logo_400_400/company-logo_400_400/0/1697690113611/dream_wedding_hub_logo?e=1789603200&v=beta&t=X5P5B5YM7zw_BV8IlWNDgG_3w_7hr_cs07NF9COpCow",
+                            "width": 400,
+                            "height": 400
+                        },
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D4D0BAQFkq5bvHZM53Q/company-logo_200_200/company-logo_200_200/0/1697690113611/dream_wedding_hub_logo?e=1789603200&v=beta&t=qvfi_PWpHLnht0EuN1RB1v1RlWcLFyhF49PXmGClVTs",
+                            "width": 200,
+                            "height": 200
+                        },
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D4D0BAQFkq5bvHZM53Q/company-logo_100_100/company-logo_100_100/0/1697690113611/dream_wedding_hub_logo?e=1789603200&v=beta&t=DOYpnoeHUVdjTkrib4BsUDpulO6gpjR-C9lNAl-bmQI",
+                            "width": 100,
+                            "height": 100
+                        }
+                    ]
+                },
+                "companyUniversalName": "dream-wedding-hub"
+            },
+            {
+                "position": "Frontend Developer",
+                "location": "Nandidurga road, Bangalor",
+                "employmentType": "Internship",
+                "workplaceType": "Remote",
+                "companyName": "Uzence Design Studio",
+                "companyLinkedinUrl": "https://www.linkedin.com/company/uzence-design-studio/",
+                "companyId": "69670855",
+                "duration": "2 mos",
+                "description": null,
+                "skills": [
+                    "storybook",
+                    "TypeScript",
+                    "React.js",
+                    "Tailwind CSS"
+                ],
+                "startDate": {
+                    "month": "Sep",
+                    "year": 2025,
+                    "text": "Sep 2025"
+                },
+                "endDate": {
+                    "month": "Oct",
+                    "year": 2025,
+                    "text": "Oct 2025"
+                },
+                "companyLogo": {
+                    "url": "https://media.licdn.com/dms/image/v2/D560BAQE10q0eu4xfgw/company-logo_400_400/company-logo_400_400/0/1687423013145/uzence_design_studio_logo?e=1789603200&v=beta&t=lnrH4lNSah9W2hvoMxLtUfCLIZgWZRopQaulXa6MR-k",
+                    "sizes": [
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D560BAQE10q0eu4xfgw/company-logo_400_400/company-logo_400_400/0/1687423013145/uzence_design_studio_logo?e=1789603200&v=beta&t=lnrH4lNSah9W2hvoMxLtUfCLIZgWZRopQaulXa6MR-k",
+                            "width": 400,
+                            "height": 400
+                        },
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D560BAQE10q0eu4xfgw/company-logo_200_200/company-logo_200_200/0/1687423013145/uzence_design_studio_logo?e=1789603200&v=beta&t=Pol_Mqj4s-INbvyBSCWmdy74jXDckAE5thwGU2YLR90",
+                            "width": 200,
+                            "height": 200
+                        },
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D560BAQE10q0eu4xfgw/company-logo_100_100/company-logo_100_100/0/1687423013145/uzence_design_studio_logo?e=1789603200&v=beta&t=FQxmcC5dwWwwpkNqmSRhQm7Jn2JB54j8VJYP_h3RkdY",
+                            "width": 100,
+                            "height": 100
+                        }
+                    ]
+                },
+                "companyUniversalName": "uzence-design-studio"
+            },
+            {
+                "position": "Web Developer",
+                "location": "Kolkata, West Bengal, India",
+                "employmentType": "Internship",
+                "workplaceType": "Remote",
+                "companyName": "Vedaz",
+                "companyLinkedinUrl": "https://www.linkedin.com/company/vedazz/",
+                "companyId": "103767471",
+                "duration": "2 mos",
+                "description": null,
+                "skills": [
+                    "Node.js",
+                    "Automation",
+                    "MongoDB",
+                    "remix",
+                    "Email Marketing",
+                    "Artificial Intelligence (AI)",
+                    "Chatbot Development"
+                ],
+                "startDate": {
+                    "month": "Jun",
+                    "year": 2025,
+                    "text": "Jun 2025"
+                },
+                "endDate": {
+                    "month": "Jul",
+                    "year": 2025,
+                    "text": "Jul 2025"
+                },
+                "companyLogo": {
+                    "url": "https://media.licdn.com/dms/image/v2/D560BAQHY8kuVJYNm2A/company-logo_400_400/company-logo_400_400/0/1721367846171?e=1789603200&v=beta&t=YDUHv4UYe78VSsNB-b5yKL3CEsgk0dYLFFRgJbyLR8M",
+                    "sizes": [
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D560BAQHY8kuVJYNm2A/company-logo_400_400/company-logo_400_400/0/1721367846171?e=1789603200&v=beta&t=YDUHv4UYe78VSsNB-b5yKL3CEsgk0dYLFFRgJbyLR8M",
+                            "width": 400,
+                            "height": 400
+                        },
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D560BAQHY8kuVJYNm2A/company-logo_200_200/company-logo_200_200/0/1721367846171?e=1789603200&v=beta&t=d899u3Y8oPNAaOgpr4iJz8RX-7u3H448PgRrcltdeTA",
+                            "width": 200,
+                            "height": 200
+                        },
+                        {
+                            "url": "https://media.licdn.com/dms/image/v2/D560BAQHY8kuVJYNm2A/company-logo_100_100/company-logo_100_100/0/1721367846171?e=1789603200&v=beta&t=zOvaF0hKMPXSL3OrXqiC0I3meJ6WqxC1_PC3WbnTO2c",
+                            "width": 100,
+                            "height": 100
+                        }
+                    ]
+                },
+                "companyUniversalName": "vedazz"
+            }
+        ],
+        "education": [
+            {
+                "schoolName": "MODREN INSTITUTE OF TECHNOLOGY AND RESEARCH CENTER ",
+                "schoolLinkedinUrl": "https://www.linkedin.com/search/results/all/?keywords=MODREN+INSTITUTE+OF+TECHNOLOGY+AND+RESEARCH+CENTER+",
+                "schoolId": null,
+                "degree": "Bachelor of Technology - BTech",
+                "fieldOfStudy": "Computer Science",
+                "period": "Sep 2023 - Aug 2027",
+                "startDate": {
+                    "month": "Sep",
+                    "year": 2023,
+                    "text": "Sep 2023"
+                },
+                "endDate": {
+                    "month": "Aug",
+                    "year": 2027,
+                    "text": "Aug 2027"
+                },
+                "schoolLogo": null
+            },
+            {
+                "schoolName": "GOVERNMENT SENIOR SECONDERY SCHOOL , TAPUKARA",
+                "schoolLinkedinUrl": "https://www.linkedin.com/search/results/all/?keywords=GOVERNMENT+SENIOR+SECONDERY+SCHOOL+%2C+TAPUKARA",
+                "schoolId": null,
+                "degree": "12TH",
+                "fieldOfStudy": "Business/Office Automation/Technology/Data Entry",
+                "period": "2022 - 2029",
+                "startDate": {
+                    "year": 2022,
+                    "text": "2022"
+                },
+                "endDate": {
+                    "year": 2029,
+                    "text": "2029"
+                },
+                "schoolLogo": null
+            }
+        ],
+        "certifications": [],
+        "projects": [],
+        "volunteering": [],
+        "receivedRecommendations": [],
+        "skills": [
+            {
+                "name": "DevOps",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "Data Scraping",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "Back-End Web Development",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "Full-Stack Development",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "Automation",
+                "positions": [
+                    "Web Developer at Vedaz"
+                ]
+            },
+            {
+                "name": "Email Marketing",
+                "positions": [
+                    "Web Developer at Vedaz"
+                ]
+            },
+            {
+                "name": "Artificial Intelligence (AI)",
+                "positions": [
+                    "Web Developer at Vedaz"
+                ]
+            },
+            {
+                "name": "Chatbot Development",
+                "positions": [
+                    "Web Developer at Vedaz"
+                ]
+            },
+            {
+                "name": "TypeScript",
+                "positions": [
+                    "Frontend Developer at Uzence Design Studio"
+                ]
+            },
+            {
+                "name": "Web Development"
+            },
+            {
+                "name": "Engineering"
+            },
+            {
+                "name": "Problem Solving",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "Management"
+            },
+            {
+                "name": "storybook",
+                "positions": [
+                    "Frontend Developer at Uzence Design Studio"
+                ]
+            },
+            {
+                "name": "Prisma ORM",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "Jenkins",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "SQL",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "Next.js",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "MongoDB",
+                "positions": [
+                    "Web Developer at Vedaz"
+                ]
+            },
+            {
+                "name": "remix",
+                "positions": [
+                    "Web Developer at Vedaz"
+                ]
+            },
+            {
+                "name": "Python (Programming Language)",
+                "positions": [
+                    "Full-stack Developer at Dream Wedding Hub Private Limited"
+                ]
+            },
+            {
+                "name": "Bootstrap (Framework)"
+            },
+            {
+                "name": "React.js",
+                "positions": [
+                    "Frontend Developer at Uzence Design Studio"
+                ]
+            },
+            {
+                "name": "Tailwind CSS",
+                "positions": [
+                    "Frontend Developer at Uzence Design Studio"
+                ]
+            },
+            {
+                "name": "Node.js",
+                "positions": [
+                    "Web Developer at Vedaz"
+                ]
+            },
+            {
+                "name": "Cascading Style Sheets (CSS)"
+            },
+            {
+                "name": "Microsoft Excel"
+            },
+            {
+                "name": "HTML"
+            }
+        ],
+        "publications": [],
+        "courses": [],
+        "patents": [],
+        "honorsAndAwards": [],
+        "languages": [],
+        "organizations": [],
+        "causes": [],
+        "featured": {
+            "images": [],
+            "link": null,
+            "title": null,
+            "subtitle": null,
+            "slides": [
+                {
+                    "title": null,
+                    "subtitle": null,
+                    "description": null,
+                    "url": "https://www.linkedin.com/feed/update/urn:li:activity:7310958021956833280?updateEntityUrn=urn%3Ali%3Afs_feedUpdate%3A%28V2%2Curn%3Ali%3Aactivity%3A7310958021956833280%29",
+                    "image": {
+                        "url": "https://media.licdn.com/dms/image/v2/D4D22AQFgGTdVojkxRA/feedshare-image-high-res/B4DZXW9kq_HwAs-/0/1743068221644?e=1789603200&v=beta&t=lTnQucfE1aJSF88FQ3M4HODUUyQFtUctIuvYrXb8wXQ"
+                    }
+                }
+            ]
+        },
+        "composeOptionType": "PREMIUM_INMAIL",
+        "moreProfiles": [
+            {
+                "id": "ACoAAE5SRAEB8LRwgfVe9ombX_DFIlHy2fK8cHg",
+                "firstName": "Priyanshu",
+                "lastName": "Bansal",
+                "position": "Java Backend developer / jsf UI designer / React.js / node.js / MERN Stack //\n || Part-time Programmer || Full-time Learner! ||",
+                "publicIdentifier": "priyanshu-bansal-a81088308",
+                "linkedinUrl": "https://www.linkedin.com/in/priyanshu-bansal-a81088308"
+            },
+            {
+                "id": "ACoAADkYEm4BKb-A3bDZkC18lREMqLX-EsIpSHQ",
+                "firstName": "Shyam",
+                "lastName": "Saini",
+                "position": "Chief Operating Officer (COO) @ Dream Wedding Hub Pvt.Ltd | Website Designer | Search Engine Optimization (SEO) | AI Agent Autometion",
+                "publicIdentifier": "shyam-saini-092960228",
+                "linkedinUrl": "https://www.linkedin.com/in/shyam-saini-092960228"
+            },
+            {
+                "id": "ACoAAD4nrMIB3JNJs-k7wCT82g_oQpeRirUAtw4",
+                "firstName": "Chetna",
+                "lastName": "Soni",
+                "position": "Student at MITRC College, Alwar mn",
+                "publicIdentifier": "chetna-soni-002289251",
+                "linkedinUrl": "https://www.linkedin.com/in/chetna-soni-002289251"
+            },
+            {
+                "id": "ACoAAD28yG0BsqgFMoQCf3e9DhwyX98mWucDDj0",
+                "firstName": "Lakshya",
+                "lastName": "Sharma",
+                "position": "SDE@75WAY || SIH’25 WINNER✨||Java || BlockChain || SpringBoot || Spring AI || OpenAI || Full Stack || MERN || DJANGO || PostgreSQL || SQL || MongoDB || WEB3",
+                "publicIdentifier": "lakshya107",
+                "linkedinUrl": "https://www.linkedin.com/in/lakshya107"
+            },
+            {
+                "id": "ACoAAD4dHfgB19trmZb1Va8VZ44QQb3Fp4lmQO8",
+                "firstName": "Nancy",
+                "lastName": "Sharma",
+                "position": "R&D PM @Nippon Audiotronix Pvt. Ltd. | Project Management(IT & Automobile) | Full Stack Development",
+                "publicIdentifier": "nancy-sharma2707",
+                "linkedinUrl": "https://www.linkedin.com/in/nancy-sharma2707"
+            },
+            {
+                "id": "ACoAAE1DSlIB5B26AnjOv9Wk16jaslFgdhtJuVQ",
+                "firstName": "Amit Kumar",
+                "lastName": "Saini",
+                "position": "Founder & CEO at Dream Wedding Hub Pvt. Ltd.\n",
+                "publicIdentifier": "amitkumarsainialwar",
+                "linkedinUrl": "https://www.linkedin.com/in/amitkumarsainialwar"
+            },
+            {
+                "id": "ACoAAEanA9UBA2PtER7WjZitODUDTy6g134VBQ8",
+                "firstName": "Akshay",
+                "lastName": "Sharma",
+                "position": "Aspiring MERN Stack Developer | Final Year CSE | Ex-Full Stack Developer Intern @ Ecoplug Energy India Limited | Open to InternshipOpen to SDE & Frontend Roles",
+                "publicIdentifier": "akshay-sharma-959b7a290",
+                "linkedinUrl": "https://www.linkedin.com/in/akshay-sharma-959b7a290"
+            },
+            {
+                "id": "ACoAAFRyJfUBKdRXkVcM2eO640uVFsa67VRqpmA",
+                "firstName": "Yash",
+                "lastName": "Jangid",
+                "position": "Developer ",
+                "publicIdentifier": "216-yaash",
+                "linkedinUrl": "https://www.linkedin.com/in/216-yaash"
+            },
+            {
+                "id": "ACoAAD2sHYQBrkNhxnBfedFKNyiZasV6SAbyLwg",
+                "firstName": "Ashu",
+                "lastName": "Jarodia",
+                "position": "Full-stack Developer  | MERN Stack, React Native Development",
+                "publicIdentifier": "ashu-jarodia-a8462224a",
+                "linkedinUrl": "https://www.linkedin.com/in/ashu-jarodia-a8462224a"
+            },
+            {
+                "id": "ACoAAD150s4BAbjESlkMB1k8gk8dJxwUmzkiUJY",
+                "firstName": "Hardik",
+                "lastName": "Kumar",
+                "position": "Software Developer | Working on Data Structures and Algorithms | System Design | MERN Stack & AI/ML Enthusiast",
+                "publicIdentifier": "hardik-kumar-63a4b3249",
+                "linkedinUrl": "https://www.linkedin.com/in/hardik-kumar-63a4b3249"
+            },
+            {
+                "id": "ACoAAGC_uZIBhaN9Txf-nLZ3z04Tz9Z-4yEsk9U",
+                "firstName": "Irina",
+                "lastName": "Shiryaeva",
+                "position": "--",
+                "publicIdentifier": "irina-shiryaeva-a96722393",
+                "linkedinUrl": "https://www.linkedin.com/in/irina-shiryaeva-a96722393"
+            },
+            {
+                "id": "ACoAAGWA6N0BqQwbkHNhQHlYbJIotWFkutCT23c",
+                "firstName": "Klavdiya",
+                "lastName": "Tihonova",
+                "position": "--",
+                "publicIdentifier": "klavdiya-tihonova-9113913b6",
+                "linkedinUrl": "https://www.linkedin.com/in/klavdiya-tihonova-9113913b6"
+            },
+            {
+                "id": "ACoAAGWgUsoBVtknksjkwg-0sMMvcdYiIlIT2_8",
+                "firstName": "Arseniy",
+                "lastName": "Shubin",
+                "position": "--",
+                "publicIdentifier": "arseniy-shubin-1a20053b7",
+                "linkedinUrl": "https://www.linkedin.com/in/arseniy-shubin-1a20053b7"
+            },
+            {
+                "id": "ACoAAGvN-HwBBCAAPjQ5PRYoizfVrCpiOIdij_k",
+                "firstName": "ana",
+                "lastName": "suceanu",
+                "position": "--",
+                "publicIdentifier": "ana-suceanu-710872425",
+                "linkedinUrl": "https://www.linkedin.com/in/ana-suceanu-710872425"
+            },
+            {
+                "id": "ACoAAGwCIFQBrY37DM9-lJXfv_uWfuZmJKUMcYc",
+                "firstName": "Lilia",
+                "lastName": "Bujor",
+                "position": "--",
+                "publicIdentifier": "lilia-bujor-784a40426",
+                "linkedinUrl": "https://www.linkedin.com/in/lilia-bujor-784a40426"
+            },
+            {
+                "id": "ACoAAFY-9dwBFwbtP7xv_emTFIT803xpGj3BgyE",
+                "firstName": "Vladimir",
+                "lastName": "Veretennikov",
+                "position": "--",
+                "publicIdentifier": "vladimir-veretennikov-024705344",
+                "linkedinUrl": "https://www.linkedin.com/in/vladimir-veretennikov-024705344"
+            },
+            {
+                "id": "ACoAAGDKhuUBvC8eRcFAPaoO62R33j9EC8wnVhU",
+                "firstName": "Rimma",
+                "lastName": "Shestakova",
+                "position": "--",
+                "publicIdentifier": "rimma-shestakova-6b1a04393",
+                "linkedinUrl": "https://www.linkedin.com/in/rimma-shestakova-6b1a04393"
+            },
+            {
+                "id": "ACoAAGweeNIBMfrlt2oGFP5aBff7MB1G6XiiGvM",
+                "firstName": "Valeric",
+                "lastName": "Donoga",
+                "position": "--",
+                "publicIdentifier": "valeric-donoga-816597427",
+                "linkedinUrl": "https://www.linkedin.com/in/valeric-donoga-816597427"
+            },
+            {
+                "id": "ACoAAGxeIUUBIsqaAlICuJhPDFxdFSDQe1WNsfU",
+                "firstName": "Teatrul",
+                "lastName": "Național Eugene Ionesco",
+                "position": "--",
+                "publicIdentifier": "teatrul-na%C8%9Bional-eugene-ionesco-b71a69428",
+                "linkedinUrl": "https://www.linkedin.com/in/teatrul-na%C8%9Bional-eugene-ionesco-b71a69428"
+            },
+            {
+                "id": "ACoAAGOYMpMBx6HI9tjWKpsNcJoIfAmGyu8PcC8",
+                "firstName": "Nikolay",
+                "lastName": "Agafonov",
+                "position": "--",
+                "publicIdentifier": "nikolay-agafonov-a977063a7",
+                "linkedinUrl": "https://www.linkedin.com/in/nikolay-agafonov-a977063a7"
+            }
+        ],
+        "interests": [
+            {
+                "interestName": "Top Voices",
+                "elements": [
+                    {
+                        "title": "Rishi Sunak",
+                        "subtitle": "MP for Richmond and Northallerton. Former Prime Minister of the United Kingdom.",
+                        "link": "https://www.linkedin.com/in/rishi-sunak",
+                        "caption": "2,269,500 followers",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/D4E03AQHuaJqlVoEyCQ/profile-displayphoto-crop_800_800/B4EZoXyQrQHgAI-/0/1761335645996?e=1789603200&v=beta&t=EvjyH9G7EUAGOywB5iBlm_-JsE1Odx6s2tGVcjaDaV4"
+                        }
+                    },
+                    {
+                        "title": "Sundar Pichai",
+                        "subtitle": "CEO at Google",
+                        "link": "https://www.linkedin.com/in/sundarpichai",
+                        "caption": "5,104,803 followers",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/D5603AQHC8_1s7IHNHg/profile-displayphoto-crop_800_800/B56Z36YnjDIkAI-/0/1778022254573?e=1789603200&v=beta&t=swDXoNQIbp109_hm89VpNJ9PxaZuj94np_mZqBxH278"
+                        }
+                    }
+                ]
+            },
+            {
+                "interestName": "Companies",
+                "elements": [
+                    {
+                        "title": "JPMorganChase",
+                        "subtitle": null,
+                        "link": "https://www.linkedin.com/company/1068/",
+                        "caption": "7,650,734 followers",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/D4E0BAQGxpntCyRgsuA/company-logo_400_400/company-logo_400_400/0/1718711710850/jpmorganchase_logo?e=1789603200&v=beta&t=NWxex1CiSniAGgmKYnitfkEszQtyJs_9dGtZ3fi94U4"
+                        }
+                    },
+                    {
+                        "title": "American Express",
+                        "subtitle": null,
+                        "link": "https://www.linkedin.com/company/1277/",
+                        "caption": "3,773,984 followers",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/C4D0BAQGRhsociEn4gQ/company-logo_400_400/company-logo_400_400/0/1631367875582?e=1789603200&v=beta&t=WjwUzEBft8Fhbh2X2sUm6k7oV7Q6DMwt82Ozpdi8jdo"
+                        }
+                    }
+                ]
+            },
+            {
+                "interestName": "Groups",
+                "elements": [
+                    {
+                        "title": "Python Students & Professionals",
+                        "subtitle": null,
+                        "link": "https://www.linkedin.com/groups/9100029",
+                        "caption": "8,488 members",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/C4E07AQFOf88h5KBt_g/group-logo_image-shrink_400x400/group-logo_image-shrink_400x400/0/1646329533410?e=1788876000&v=beta&t=9WDyK3ZKTBTzr63XoTxMzRD2de-tx5GglQedYpMMtwI"
+                        }
+                    }
+                ]
+            },
+            {
+                "interestName": "Newsletters",
+                "elements": [
+                    {
+                        "title": "AI Insights for Business",
+                        "subtitle": "Stay ahead with AI insights for business leaders. Get the latest innovations and trends delivered to your inbox.",
+                        "link": "https://www.linkedin.com/newsletters/7457152401859461120",
+                        "caption": "Published monthly",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/D4E12AQG8bwgP_WB4PA/series-logo_image-shrink_300_300/B4EZ30gjZ0HMAQ-/0/1777923667914?e=1789603200&v=beta&t=KYQtUyj-N7UCdE4y-lXJGR6iMl45XsZIb5n3XLANU0w"
+                        }
+                    },
+                    {
+                        "title": "Behind the Build",
+                        "subtitle": "The people and tech behind the build. Monthly career tips and insights into software, hardware, and next-gen AI.",
+                        "link": "https://www.linkedin.com/newsletters/7455115826833145856",
+                        "caption": "Published monthly",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/D5612AQGK6CrBrHOrPA/series-logo_image-shrink_200_200/B56Z35E_CBKoAI-/0/1778000327061?e=1789603200&v=beta&t=MxQk5C6P-K3qQZy8znNbmoLWTUBmdUGkdzlbHMoB2jc"
+                        }
+                    }
+                ]
+            },
+            {
+                "interestName": "Schools",
+                "elements": [
+                    {
+                        "title": "Indian Institute of Technology, Bombay",
+                        "subtitle": null,
+                        "link": "https://www.linkedin.com/school/157266/",
+                        "caption": "768,076 followers",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/C4D0BAQGmDoDCx_FYpA/company-logo_400_400/company-logo_400_400/0/1660636307357/indian_institute_of_technology_bombay_logo?e=1789603200&v=beta&t=WwOSo_zLGth3W4SvkKgVdJxOeEyKIKh8FDFBr7Y8k8Y"
+                        }
+                    },
+                    {
+                        "title": "freeCodeCamp",
+                        "subtitle": null,
+                        "link": "https://www.linkedin.com/school/4831032/",
+                        "caption": "2,316,838 followers",
+                        "image": {
+                            "url": "https://media.licdn.com/dms/image/v2/C4E0BAQGLKj3JHcof0w/company-logo_400_400/company-logo_400_400/0/1630639684997/free_code_camp_logo?e=1789603200&v=beta&t=fMYs6h-XEs9f4El_Vh6L9H4LlSGGDyA647ay6T8E_mM"
+                        }
+                    }
+                ]
+            }
+        ],
+        "originalQuery": {
+            "publicIdentifier": "jaisingh00"
+        }
+    }
+]

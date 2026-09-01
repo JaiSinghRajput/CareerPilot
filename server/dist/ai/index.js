@@ -4,14 +4,14 @@ import { analyzeResumeTool, analyzeResumeSchema } from './tools/resumeTools.js';
 dotenv.config();
 // Using OpenAICompatibleProvider configured for Eden AI
 const aiProvider = new OpenAICompatibleProvider({
-    apiKey: process.env.EDEN_API_KEY ?? process.env.OPENAI_API_KEY ?? 'local-key',
-    baseURL: 'https://api.edenai.run/v3',
+    apiKey: process.env.AI_API_KEY ?? process.env.OPENAI_API_KEY ?? 'local-key',
+    baseURL: process.env.AI_API_URL ?? "https://api.openai.com/api/v1",
 });
 export const aiEvents = new AgentEventBus();
 // Basic Gateway Agent Initialization
 export const aiGateway = new Agent({
     provider: aiProvider,
-    model: process.env.EDEN_MODEL_NAME ?? 'google/lyria-3-clip-preview', // Eden AI requires provider/model format
+    model: process.env.EDEN_MODEL_NAME ?? 'openai/gpt-4o-mini', // Eden AI requires provider/model format
     events: aiEvents,
     loggerEnabled: true,
     preferStreaming: false, // Eden AI payload had stream: false, updating to match
