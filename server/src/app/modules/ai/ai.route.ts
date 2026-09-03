@@ -18,4 +18,7 @@ router.post('/resume/:id/analyze', requireAuth, AIController.analyzeResume);
 router.get('/resume/:id', requireAuth, AIController.getResumeById);
 router.delete('/resume/:id', requireAuth, AIController.deleteResume);
 
+router.get('/projects/recommend', requireAuth, AIController.getRecommendations);
+router.post('/projects/recommend', requireAuth, AIController.recommendProjects);
+
 export default router;

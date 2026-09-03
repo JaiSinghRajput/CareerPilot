@@ -5,7 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ChevronLeft, Edit2, Check, X, Building, GraduationCap, CalendarDays, ExternalLink, MapPin, Briefcase, Plus, Trash2, MessageSquare, BrainCircuit, FolderGit2 } from "lucide-react";
+import { ChevronLeft, Edit2, Check, X, Building, GraduationCap, CalendarDays, ExternalLink, MapPin, Briefcase, Plus, Trash2, MessageSquare, BrainCircuit, FolderGit2, Download } from "lucide-react";
 import { apiRequest } from "@/lib/api";
 
 export default function ResumeDetailPage() {
@@ -186,7 +186,7 @@ export default function ResumeDetailPage() {
     <div className="min-h-screen p-6 md:p-10">
       <div className="mx-auto max-w-4xl">
         <div className="mb-6">
-          <Link href="/resumes" className="text-text-muted hover:text-text-primary flex items-center text-sm font-medium transition-colors mb-4 inline-flex">
+          <Link href="/resumes" className="text-text-muted hover:text-text-primary items-center text-sm font-medium transition-colors mb-4 inline-flex">
             <ChevronLeft className="w-4 h-4 mr-1" /> Back to My Resumes
           </Link>
           <div className="flex items-center justify-between">
@@ -203,17 +203,22 @@ export default function ResumeDetailPage() {
                   disabled={isAnalyzing}
                   className={`primary-button px-4 py-2 text-sm flex items-center gap-2 mr-1 ${isAnalyzing ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  <BrainCircuit className="w-4 h-4" /> 
+                  <BrainCircuit className="w-4 h-4" />
                   {isAnalyzing ? "Analyzing..." : "Analyze"}
                 </button>
               )}
 
               {/* Feedback */}
               {atsScore !== null && (
-                <Link href={`/resumes/${resumeId}/feedback`} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-indigo-500 text-white font-medium text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                <Link href={`/resumes/${resumeId}/feedback`} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-linear-to-r from-primary to-indigo-500 text-white font-medium text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
                   <MessageSquare className="w-4 h-4" /> Feedback
                 </Link>
               )}
+
+              {/* Download Resume Link */}
+              <Link href={`/resumes/${resumeId}/templates`} className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border bg-surface hover:bg-surface-hover text-text-primary font-medium text-sm shadow-sm transition-all">
+                <Download className="w-4 h-4" /> Download
+              </Link>
 
               {/* Icon Actions */}
               <div className="flex items-center gap-1 border-l border-border pl-3 ml-1">
@@ -222,7 +227,7 @@ export default function ResumeDetailPage() {
                     <ExternalLink className="w-5 h-5" />
                   </a>
                 )}
-                
+
                 {!isEditing ? (
                   <button onClick={() => setIsEditing(true)} className="p-2 rounded-full hover:bg-surface-hover text-text-secondary hover:text-primary transition-colors" title="Edit Data">
                     <Edit2 className="w-5 h-5" />
@@ -254,18 +259,18 @@ export default function ResumeDetailPage() {
           {/* AI Overview Summary (Only in View Mode) */}
           {!isEditing && atsScore === null && (
             <div className="mb-8 p-6 rounded-2xl bg-surface border border-border border-dashed text-center">
-               <BrainCircuit className="w-10 h-10 text-text-muted mx-auto mb-3 opacity-50" />
-               <h3 className="text-lg font-semibold text-text-primary mb-2">Unlock AI Insights</h3>
-               <p className="text-text-secondary leading-relaxed mb-4">
-                 This resume hasn&apos;t been analyzed yet. Analyze it now to get a professional summary, ATS score, and highly detailed feedback!
-               </p>
-               <button
-                  onClick={handleAnalyze}
-                  disabled={isAnalyzing}
-                  className={`primary-button px-6 py-2 ${isAnalyzing ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  {isAnalyzing ? "Analyzing Resume..." : "Analyze Now"}
-               </button>
+              <BrainCircuit className="w-10 h-10 text-text-muted mx-auto mb-3 opacity-50" />
+              <h3 className="text-lg font-semibold text-text-primary mb-2">Unlock AI Insights</h3>
+              <p className="text-text-secondary leading-relaxed mb-4">
+                This resume hasn&apos;t been analyzed yet. Analyze it now to get a professional summary, ATS score, and highly detailed feedback!
+              </p>
+              <button
+                onClick={handleAnalyze}
+                disabled={isAnalyzing}
+                className={`primary-button px-6 py-2 ${isAnalyzing ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {isAnalyzing ? "Analyzing Resume..." : "Analyze Now"}
+              </button>
             </div>
           )}
 
@@ -292,7 +297,7 @@ export default function ResumeDetailPage() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Enter your name"
-                    className="mt-2 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                    className="mt-2 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                   />
                 ) : (
                   <p className="mt-1 text-text-primary font-medium text-lg">{name || "Not provided"}</p>
@@ -326,7 +331,7 @@ export default function ResumeDetailPage() {
                 value={compatibleJobRoles}
                 onChange={(e) => setCompatibleJobRoles(e.target.value)}
                 placeholder="Software Engineer, Product Manager..."
-                className="mt-4 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                className="mt-4 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
               />
             ) : (
               <div className="mt-4 flex flex-wrap gap-2">
@@ -348,7 +353,7 @@ export default function ResumeDetailPage() {
                 value={skills}
                 onChange={(e) => setSkills(e.target.value)}
                 placeholder="Python, React, Machine Learning..."
-                className="mt-4 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                className="mt-4 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
               />
             ) : (
               <div className="mt-4 flex flex-wrap gap-2">
@@ -386,7 +391,7 @@ export default function ResumeDetailPage() {
                           value={exp.role || exp.title || ""}
                           onChange={(e) => { const newExp = [...experience]; newExp[i].role = e.target.value; setExperience(newExp); }}
                           placeholder="e.g. Software Engineer"
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                         />
                       </div>
                       <div>
@@ -396,7 +401,7 @@ export default function ResumeDetailPage() {
                           value={exp.company || ""}
                           onChange={(e) => { const newExp = [...experience]; newExp[i].company = e.target.value; setExperience(newExp); }}
                           placeholder="e.g. Google"
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -406,20 +411,20 @@ export default function ResumeDetailPage() {
                           value={exp.duration || ""}
                           onChange={(e) => { const newExp = [...experience]; newExp[i].duration = e.target.value; setExperience(newExp); }}
                           placeholder="e.g. Jan 2020 - Present"
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                         />
                       </div>
                       <div className="md:col-span-2">
                         <label className="text-xs text-text-muted">Details & Achievements (One per line)</label>
                         <textarea
                           value={exp.bulletPoints ? (Array.isArray(exp.bulletPoints) ? exp.bulletPoints.join('\n') : exp.bulletPoints) : ""}
-                          onChange={(e) => { 
-                            const newExp = [...experience]; 
-                            newExp[i].bulletPoints = e.target.value.split('\n'); 
-                            setExperience(newExp); 
+                          onChange={(e) => {
+                            const newExp = [...experience];
+                            newExp[i].bulletPoints = e.target.value.split('\n');
+                            setExperience(newExp);
                           }}
                           placeholder="e.g. Developed scalable backend services..."
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary min-h-[100px]"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary min-h-25"
                         />
                       </div>
                     </div>
@@ -479,7 +484,7 @@ export default function ResumeDetailPage() {
                           value={edu.degree || edu.class || ""}
                           onChange={(e) => { const newEdu = [...education]; newEdu[i].degree = e.target.value; setEducation(newEdu); }}
                           placeholder="e.g. B.S. Computer Science"
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                         />
                       </div>
                       <div>
@@ -489,7 +494,7 @@ export default function ResumeDetailPage() {
                           value={edu.institution || ""}
                           onChange={(e) => { const newEdu = [...education]; newEdu[i].institution = e.target.value; setEducation(newEdu); }}
                           placeholder="e.g. Stanford University"
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                         />
                       </div>
                     </div>
@@ -534,7 +539,7 @@ export default function ResumeDetailPage() {
                           value={proj.name || ""}
                           onChange={(e) => { const newProj = [...projects]; newProj[i].name = e.target.value; setProjects(newProj); }}
                           placeholder="e.g. E-Commerce Platform"
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                         />
                       </div>
                       <div>
@@ -544,7 +549,7 @@ export default function ResumeDetailPage() {
                           value={proj.link || ""}
                           onChange={(e) => { const newProj = [...projects]; newProj[i].link = e.target.value; setProjects(newProj); }}
                           placeholder="e.g. https://github.com/..."
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -554,7 +559,7 @@ export default function ResumeDetailPage() {
                           value={Array.isArray(proj.technologies) ? proj.technologies.join(", ") : proj.technologies || ""}
                           onChange={(e) => { const newProj = [...projects]; newProj[i].technologies = e.target.value.split(",").map((t: string) => t.trim()); setProjects(newProj); }}
                           placeholder="e.g. React, Node.js, MongoDB"
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -563,7 +568,7 @@ export default function ResumeDetailPage() {
                           value={proj.description || ""}
                           onChange={(e) => { const newProj = [...projects]; newProj[i].description = e.target.value; setProjects(newProj); }}
                           placeholder="Brief description of the project..."
-                          className="mt-1 w-full rounded-2xl border border-border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary min-h-[80px]"
+                          className="mt-1 w-full rounded-2xl border bg-background p-3 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-text-primary min-h-20"
                         />
                       </div>
                     </div>

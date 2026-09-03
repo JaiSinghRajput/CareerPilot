@@ -44,3 +44,12 @@ export const messagesTable = pgTable("messages", {
     toolCalls: jsonb("tool_calls"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const projectRecommendationsTable = pgTable("project_recommendations", {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    userId: integer("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
+    recommendations: jsonb("recommendations"),
+    isGenerating: boolean("is_generating").notNull().default(false),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});

@@ -23,7 +23,7 @@ export default function ResumeTemplatesPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [resumeData, setResumeData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedTemplateIndex, setSelectedTemplateIndex] = useState(0);
+  const [selectedTemplateIndex, setSelectedTemplateIndex] = useState<number | null>(null);
 
   async function fetchResume() {
     try {
@@ -56,14 +56,6 @@ export default function ResumeTemplatesPage() {
     window.print();
   };
 
-  const nextTemplate = () => {
-    setSelectedTemplateIndex((prev) => (prev + 1) % TEMPLATES.length);
-  };
-
-  const prevTemplate = () => {
-    setSelectedTemplateIndex((prev) => (prev - 1 + TEMPLATES.length) % TEMPLATES.length);
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center print:hidden">
@@ -86,13 +78,10 @@ export default function ResumeTemplatesPage() {
     );
   }
 
-  const ActiveTemplateComponent = TEMPLATES[selectedTemplateIndex].component;
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Non-printable Top Bar */}
-      <div className="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-border p-4 print:hidden shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
+  if (selectedTemplateIndex === null) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-border p-4 shadow-sm flex items-center gap-4">
           <button onClick={() => router.back()} className="p-2 hover:bg-surface-hover rounded-full transition-colors text-text-secondary hover:text-text-primary">
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -101,24 +90,61 @@ export default function ResumeTemplatesPage() {
               <LayoutTemplate className="w-5 h-5 text-primary" />
               Template Selection
             </h1>
-            <p className="text-sm text-text-secondary hidden md:block">Choose a template and export your resume as a PDF.</p>
+            <p className="text-sm text-text-secondary hidden md:block">Choose a template for your resume.</p>
+          </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto p-6 md:p-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {TEMPLATES.map((template, idx) => (
+              <div
+                key={template.id}
+                onClick={() => setSelectedTemplateIndex(idx)}
+                className="cursor-pointer group rounded-2xl border border-border bg-surface overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 w-70 mx-auto"
+              >
+                {/* Preview Area - scales down the actual template */}
+                <div className="bg-slate-100 dark:bg-slate-900 h-100 overflow-hidden flex justify-center relative border-b border-border">
+                  <div className="absolute top-4 w-[210mm] transform scale-[0.35] origin-top pointer-events-none shadow-xl bg-white">
+                    <template.component data={resumeData} />
+                  </div>
+                  <div className="absolute inset-0 bg-linear-to-t from-slate-100/80 via-transparent to-transparent dark:from-slate-900/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-6">
+                    <span className="bg-primary text-white px-4 py-2 rounded-full font-medium shadow-lg transform translate-y-4 group-hover:translate-y-0 transition-all">
+                      Select Template
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-text-primary mb-2">{template.name}</h3>
+                  <p className="text-text-secondary">{template.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const ActiveTemplateComponent = TEMPLATES[selectedTemplateIndex].component;
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Non-printable Top Bar */}
+      <div className="sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-border p-4 print:hidden shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <button onClick={() => setSelectedTemplateIndex(null)} className="p-2 hover:bg-surface-hover rounded-full transition-colors text-text-secondary hover:text-text-primary">
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <div>
+            <h1 className="text-xl font-bold flex items-center gap-2">
+              <LayoutTemplate className="w-5 h-5 text-primary" />
+              {TEMPLATES[selectedTemplateIndex].name} Template
+            </h1>
+            <p className="text-sm text-text-secondary hidden md:block">Preview and export your resume as a PDF.</p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center bg-surface border border-border rounded-lg overflow-hidden p-1 shadow-sm">
-            <button onClick={prevTemplate} className="p-2 hover:bg-surface-hover rounded-md transition-colors text-text-secondary hover:text-text-primary">
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <div className="px-4 text-center min-w-35">
-              <div className="font-semibold text-sm text-text-primary">{TEMPLATES[selectedTemplateIndex].name}</div>
-              <div className="text-[10px] text-text-muted">{selectedTemplateIndex + 1} of {TEMPLATES.length}</div>
-            </div>
-            <button onClick={nextTemplate} className="p-2 hover:bg-surface-hover rounded-md transition-colors text-text-secondary hover:text-text-primary">
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-
           <button
             onClick={handlePrint}
             className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl font-semibold shadow-md transition-all active:scale-95"
@@ -137,7 +163,7 @@ export default function ResumeTemplatesPage() {
 
       {/* Printable Area Container */}
       <div className="py-10 flex justify-center print:py-0 bg-slate-100 dark:bg-slate-900 overflow-x-auto min-h-[calc(100vh-140px)]">
-        <div className="shadow-2xl print:shadow-none print:w-full">
+        <div className="shadow-2xl print:shadow-none print:w-full bg-white w-full max-w-[210mm]">
           <ActiveTemplateComponent data={resumeData} />
         </div>
       </div>

@@ -163,4 +163,44 @@ export class AIController {
       res.status(500).json({ success: false, message: error.message || 'Failed to delete resume' });
     }
   }
+
+  public static async getRecommendations(req: Request, res: Response): Promise<void> {
+    try {
+      const { userId: clerkId } = getAuth(req);
+      if (!clerkId) {
+        res.status(401).json({ success: false, message: 'Unauthorized' });
+        return;
+      }
+
+      const record = await AIService.getRecommendations(clerkId);
+      
+      res.status(200).json({
+        success: true,
+        data: record
+      });
+    } catch (error: any) {
+      console.error('Get recommendations error:', error);
+      res.status(500).json({ success: false, message: error.message || 'Failed to get recommendations' });
+    }
+  }
+
+  public static async recommendProjects(req: Request, res: Response): Promise<void> {
+    try {
+      const { userId: clerkId } = getAuth(req);
+      if (!clerkId) {
+        res.status(401).json({ success: false, message: 'Unauthorized' });
+        return;
+      }
+
+      await AIService.recommendProjects(clerkId);
+      
+      res.status(200).json({
+        success: true,
+        message: 'Project recommendation generation started.'
+      });
+    } catch (error: any) {
+      console.error('Recommend projects error:', error);
+      res.status(500).json({ success: false, message: error.message || 'Failed to start project recommendation' });
+    }
+  }
 }

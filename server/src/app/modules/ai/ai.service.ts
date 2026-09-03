@@ -1,5 +1,5 @@
 import db from '../../../db/db.js';
-import { usersTable, chatsTable, messagesTable, resumesTable } from '../../../db/schema.js';
+import { usersTable, chatsTable, messagesTable, resumesTable, projectRecommendationsTable } from '../../../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
 import { aiGateway, askAI } from '../../../ai/index.js';
 import { CloudinaryService } from '../../utils/cloudinary.js';
@@ -271,6 +271,115 @@ ${JSON.stringify(resume.parsedData)}
     }
 
     await db.delete(resumesTable).where(eq(resumesTable.id, id));
+    return true;
+  }
+
+  public static async getRecommendations(clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) {
+      throw new Error('User not found in database');
+    }
+    const dbUserId = userRows[0]!.id;
+
+    const record = await db.select().from(projectRecommendationsTable).where(eq(projectRecommendationsTable.userId, dbUserId)).limit(1);
+    return record[0] || null;
+  }
+
+  public static async recommendProjects(clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) {
+      throw new Error('User not found in database');
+    }
+    const dbUserId = userRows[0]!.id;
+
+    // Check if record exists
+    const existingRows = await db.select().from(projectRecommendationsTable).where(eq(projectRecommendationsTable.userId, dbUserId)).limit(1);
+    if (existingRows.length) {
+      await db.update(projectRecommendationsTable).set({ isGenerating: true }).where(eq(projectRecommendationsTable.id, existingRows[0]!.id));
+    } else {
+      await db.insert(projectRecommendationsTable).values({ userId: dbUserId, isGenerating: true });
+    }
+
+    // Start background generation
+    (async () => {
+      try {
+        const resumes = await db.select().from(resumesTable).where(eq(resumesTable.userId, dbUserId));
+        
+        const allSkills = new Set<string>();
+        const allJobRoles = new Set<string>();
+        const existingProjects: any[] = [];
+
+        resumes.forEach(resume => {
+          if (resume.parsedData) {
+            const pd = resume.parsedData as any;
+            if (pd.skills) {
+              const skillsArray = Array.isArray(pd.skills) ? pd.skills : (typeof pd.skills === 'string' ? pd.skills.split(',') : []);
+              skillsArray.forEach((s: string) => allSkills.add(s.trim()));
+            }
+            if (pd.compatibleJobRoles) {
+              const rolesArray = Array.isArray(pd.compatibleJobRoles) ? pd.compatibleJobRoles : (typeof pd.compatibleJobRoles === 'string' ? pd.compatibleJobRoles.split(',') : []);
+              rolesArray.forEach((r: string) => allJobRoles.add(r.trim()));
+            }
+            if (pd.projects && Array.isArray(pd.projects)) {
+              pd.projects.forEach((p: any) => existingProjects.push(p));
+            }
+          }
+        });
+
+        const prompt = `You are an expert technical career advisor.
+Based on the candidate's existing skills, compatible job roles, and existing projects, recommend 4 to 6 new projects of varying difficulty (ensure there is at least one "Beginner" project, and at least one "Intermediate" project) that will help the candidate grow in their career, build upon their current skills, and land better job opportunities.
+
+IMPORTANT: DO NOT recommend any projects that are similar to their existing projects.
+IMPORTANT: Output ONLY valid JSON containing an array of recommended projects matching this structure exactly (no markdown formatting, no code blocks):
+{
+  "recommendations": [
+    {
+      "title": "Project Name",
+      "description": "Detailed description of what to build and why it's impressive.",
+      "technologies": ["Tech 1", "Tech 2"],
+      "difficulty": "Beginner | Intermediate | Advanced",
+      "reasonToBuild": "Why this helps land a better job."
+    }
+  ]
+}
+
+Candidate's Current Skills: ${Array.from(allSkills).join(", ") || "None listed"}
+Candidate's Target Roles: ${Array.from(allJobRoles).join(", ") || "None listed"}
+Candidate's Existing Projects (DO NOT RECOMMEND THESE):
+${JSON.stringify(existingProjects)}
+`;
+
+        const extractionMessages: Message[] = [
+          { role: 'system', content: [{ type: 'text', text: 'You are an expert AI career advisor. You only output pure JSON without any surrounding text or markdown blocks.' }] },
+          { role: 'user', content: [{ type: 'text', text: prompt }] }
+        ];
+
+        const result = await aiGateway.run(extractionMessages);
+        
+        let aiText = '';
+        if (result.response?.message) {
+           const msg = result.response.message as any;
+           if (msg.content) {
+             const textContent = (msg.content as any[]).find(c => c.type === 'text');
+             aiText = textContent ? textContent.text : '{}';
+           }
+        }
+
+        aiText = aiText.replace(/^```json\n?/, '').replace(/\n?```$/, '').trim();
+        let recommendationResult = JSON.parse(aiText);
+
+        await db.update(projectRecommendationsTable)
+          .set({ recommendations: recommendationResult.recommendations || [], isGenerating: false })
+          .where(eq(projectRecommendationsTable.userId, dbUserId));
+
+      } catch (error) {
+        console.error("Background recommendation generation failed:", error);
+        await db.update(projectRecommendationsTable)
+          .set({ isGenerating: false })
+          .where(eq(projectRecommendationsTable.userId, dbUserId));
+      }
+    })();
+
     return true;
   }
 }
