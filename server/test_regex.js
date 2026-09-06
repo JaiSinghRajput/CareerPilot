@@ -1,0 +1,6 @@
+const text = `We are seeking a skilled MuleSoft Engineer...
+### Key Responsibilities
+Design, develop, test...
+Build API-led...`;
+
+console.log(text.replace(/\n+/g, '\n\n'));

@@ -115,5 +115,65 @@ export class AIController {
             res.status(500).json({ success: false, message: error.message || 'Failed to get resume' });
         }
     }
+    static async deleteResume(req, res) {
+        try {
+            const { id } = req.params;
+            const resumeId = parseInt(id || '', 10);
+            if (isNaN(resumeId)) {
+                res.status(400).json({ success: false, message: 'Invalid resume ID' });
+                return;
+            }
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            await AIService.deleteResume(resumeId, clerkId);
+            res.status(200).json({
+                success: true,
+                message: 'Resume deleted successfully'
+            });
+        }
+        catch (error) {
+            console.error('Delete resume error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to delete resume' });
+        }
+    }
+    static async getRecommendations(req, res) {
+        try {
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            const record = await AIService.getRecommendations(clerkId);
+            res.status(200).json({
+                success: true,
+                data: record
+            });
+        }
+        catch (error) {
+            console.error('Get recommendations error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to get recommendations' });
+        }
+    }
+    static async recommendProjects(req, res) {
+        try {
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            await AIService.recommendProjects(clerkId);
+            res.status(200).json({
+                success: true,
+                message: 'Project recommendation generation started.'
+            });
+        }
+        catch (error) {
+            console.error('Recommend projects error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to start project recommendation' });
+        }
+    }
 }
 //# sourceMappingURL=ai.controller.js.map

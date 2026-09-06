@@ -5,5 +5,8 @@ export declare class AIController {
     static analyzeResume(req: Request, res: Response): Promise<void>;
     static getResumes(req: Request, res: Response): Promise<void>;
     static getResumeById(req: Request, res: Response): Promise<void>;
+    static deleteResume(req: Request, res: Response): Promise<void>;
+    static getRecommendations(req: Request, res: Response): Promise<void>;
+    static recommendProjects(req: Request, res: Response): Promise<void>;
 }
 //# sourceMappingURL=ai.controller.d.ts.map

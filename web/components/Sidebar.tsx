@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import ThemeToggle from "@/components/ThemeToggle";
-import { LayoutDashboard, FileText, Compass, ChevronLeft, ChevronRight, Menu, X, Lightbulb } from "lucide-react";
+import { LayoutDashboard, FileText, Compass, ChevronLeft, ChevronRight, Menu, X, Lightbulb, Briefcase } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export function Sidebar() {
@@ -17,6 +17,7 @@ export function Sidebar() {
     { href: "/resumes", label: "My Resumes", icon: FileText },
     { href: "/resume-builder", label: "Resume Builder", icon: Compass },
     { href: "/recommendations", label: "Project Ideas", icon: Lightbulb },
+    { href: "/jobs", label: "Job Explorer", icon: Briefcase },
   ];
 
   return (

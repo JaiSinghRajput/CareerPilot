@@ -39,5 +39,15 @@ export declare class AIService {
         createdAt: Date;
         updatedAt: Date;
     }>;
+    static deleteResume(id: number, clerkId: string): Promise<boolean>;
+    static getRecommendations(clerkId: string): Promise<{
+        id: number;
+        userId: number;
+        recommendations: unknown;
+        isGenerating: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    } | null>;
+    static recommendProjects(clerkId: string): Promise<boolean>;
 }
 //# sourceMappingURL=ai.service.d.ts.map

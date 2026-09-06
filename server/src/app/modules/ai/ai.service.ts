@@ -86,7 +86,12 @@ Infer a few compatible job roles for the candidate based on their profile.
 
 {
   "name": "Full Name",
-  "location": "City, Country or Unknown",
+  "location": {
+    "city": "City Name or null",
+    "district": "District Name or null",
+    "state": "State Name or null",
+    "country": "Country Name or null"
+  },
   "skills": ["skill1", "skill2"],
   "compatibleJobRoles": ["Role 1", "Role 2", "Role 3"],
   "experience": [{"company": "Name", "role": "Title", "duration": "Dates", "bulletPoints": ["point 1", "point 2"]}],
