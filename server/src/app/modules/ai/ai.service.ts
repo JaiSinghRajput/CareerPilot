@@ -1,7 +1,7 @@
 import db from '../../../db/db.js';
 import { usersTable, chatsTable, messagesTable, resumesTable, projectRecommendationsTable } from '../../../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
-import { aiGateway, askAI } from '../../../ai/index.js';
+import { aiGateway, askAI, SYSTEM_PROMPT } from '../../../ai/index.js';
 import { CloudinaryService } from '../../utils/cloudinary.js';
 import type { Message } from 'agenix';
 
@@ -12,11 +12,11 @@ export class AIService {
     if (!userRows.length) {
       throw new Error('User not found in database');
     }
-    const dbUserId = userRows[0]!.id;
+    const user = userRows[0]!;
+    const dbUserId = user.id;
 
     let currentChatId = chatId;
     if (!currentChatId) {
-      // Create new chat
       const chatRows = await db.insert(chatsTable).values({
         userId: dbUserId,
         title: prompt.substring(0, 50) + (prompt.length > 50 ? '...' : ''),
@@ -24,14 +24,41 @@ export class AIService {
       currentChatId = chatRows[0]!.id;
     }
 
-    // Save user message
+    // Save user message to DB
     await db.insert(messagesTable).values({
       chatId: currentChatId,
       role: 'user',
       content: prompt,
     });
 
-    const result = await askAI(prompt);
+    // Fetch the latest parsed resume
+    const resumes = await db.select().from(resumesTable).where(eq(resumesTable.userId, dbUserId)).orderBy(desc(resumesTable.createdAt)).limit(1);
+    let resumeContext = 'No resume uploaded yet.';
+    if (resumes.length > 0 && resumes[0]?.parsedData) {
+      resumeContext = JSON.stringify(resumes[0].parsedData);
+    }
+
+    // Load recent chat history
+    const historyRows = await db.select()
+      .from(messagesTable)
+      .where(eq(messagesTable.chatId, currentChatId))
+      .orderBy(desc(messagesTable.createdAt))
+      .limit(20);
+
+    const historyMessages = historyRows.reverse().map(msg => ({
+      role: msg.role as 'user' | 'assistant',
+      content: [{ type: 'text', text: msg.content || '' }] as any[]
+    }));
+
+    // Inject Context into SYSTEM PROMPT
+    const contextInjectedPrompt = `${SYSTEM_PROMPT}\n\n=== USER CONTEXT ===\n- User Name: ${user.name}\n- Clerk ID (pass this to tools): ${clerkId}\n- Latest Resume Data: ${resumeContext}\n===================`;
+
+    const messages: Message[] = [
+      { role: 'system', content: [{ type: 'text', text: contextInjectedPrompt }] },
+      ...historyMessages
+    ];
+
+    const result = await askAI(messages);
     
     let aiText = '';
     let aiToolCalls: any = null;
@@ -39,12 +66,46 @@ export class AIService {
        const msg = result.response.message as any;
        if (msg.content) {
          const textContent = (msg.content as any[]).find(c => c.type === 'text');
-         aiText = textContent ? textContent.text : 'No text response generated.';
+         aiText = textContent ? textContent.text : '';
        }
        aiToolCalls = msg.toolCalls || null;
     }
 
-    // Save AI message
+    // MANUALLY INTERCEPT TOOL RESULTS
+    // If the LLM failed to generate text after calling searchJobs, or we just want to guarantee the cards appear:
+    if (result.messages) {
+      for (const msg of result.messages) {
+        if (msg.role === 'tool') {
+          const toolContent = msg.content?.find((c: any) => c.type === 'tool_result') as any;
+          if (toolContent && toolContent.toolName === 'searchJobs' && toolContent.result) {
+            let jobsResult;
+            try {
+              jobsResult = typeof toolContent.result === 'string' ? JSON.parse(toolContent.result) : toolContent.result;
+            } catch (e) {
+              jobsResult = toolContent.result;
+            }
+            
+            const jobsList = Array.isArray(jobsResult) ? jobsResult : (jobsResult.jobs || []);
+            if (jobsList.length > 0) {
+              const jobCardsText = jobsList.map((job: any) => `[JOB_CARD:${job.id}]`).join('\n');
+              
+              // Append to aiText if not already present
+              if (!aiText.includes('[JOB_CARD:')) {
+                 aiText += (aiText ? '\n\n' : '') + "Here are the jobs I found for you:\n\n" + jobCardsText;
+              }
+            } else if (!aiText) {
+              aiText = "I couldn't find any matching jobs right now.";
+            }
+          }
+        }
+      }
+    }
+
+    if (!aiText) {
+      aiText = "I processed your request, but the model didn't generate a text response.";
+    }
+
+    // Save AI message to DB
     await db.insert(messagesTable).values({
       chatId: currentChatId,
       role: 'assistant',
@@ -385,6 +446,73 @@ ${JSON.stringify(existingProjects)}
       }
     })();
 
+    return true;
+  }
+
+  public static async getLatestChat(clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) return null;
+    const dbUserId = userRows[0]!.id;
+
+    const chatRows = await db.select().from(chatsTable).where(eq(chatsTable.userId, dbUserId)).orderBy(desc(chatsTable.createdAt)).limit(1);
+    if (!chatRows.length) return null;
+    const chat = chatRows[0]!;
+
+    const historyRows = await db.select()
+      .from(messagesTable)
+      .where(eq(messagesTable.chatId, chat.id))
+      .orderBy(messagesTable.createdAt);
+
+    return { chat, messages: historyRows };
+  }
+
+  public static async getChatsList(clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) return [];
+    const dbUserId = userRows[0]!.id;
+
+    return await db.select()
+      .from(chatsTable)
+      .where(eq(chatsTable.userId, dbUserId))
+      .orderBy(desc(chatsTable.updatedAt));
+  }
+
+  public static async getChatById(chatId: number, clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) return null;
+    const dbUserId = userRows[0]!.id;
+
+    const chatRows = await db.select()
+      .from(chatsTable)
+      .where(eq(chatsTable.id, chatId))
+      .limit(1);
+    
+    if (!chatRows.length || chatRows[0]!.userId !== dbUserId) return null;
+    const chat = chatRows[0]!;
+
+    const historyRows = await db.select()
+      .from(messagesTable)
+      .where(eq(messagesTable.chatId, chat.id))
+      .orderBy(messagesTable.createdAt);
+
+    return { chat, messages: historyRows };
+  }
+
+  public static async deleteChat(chatId: number, clerkId: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) throw new Error('User not found');
+    const dbUserId = userRows[0]!.id;
+
+    const chatRows = await db.select()
+      .from(chatsTable)
+      .where(eq(chatsTable.id, chatId))
+      .limit(1);
+    
+    if (!chatRows.length || chatRows[0]!.userId !== dbUserId) {
+      throw new Error('Chat not found or unauthorized');
+    }
+
+    await db.delete(chatsTable).where(eq(chatsTable.id, chatId));
     return true;
   }
 }

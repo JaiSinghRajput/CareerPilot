@@ -16,6 +16,7 @@ interface Job {
   description: string;
   date_posted: string;
   site: string;
+  company_logo?: string;
 }
 
 export default function JobsPage() {
