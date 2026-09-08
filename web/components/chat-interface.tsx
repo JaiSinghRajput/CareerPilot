@@ -3,7 +3,6 @@
 import { useRef, useEffect } from "react";
 import { Send, Bot, User, Loader2, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { apiRequest } from "@/lib/api";
 import { ChatJobCard } from "./ChatJobCard";
 
 import { useChat } from "./chat-provider";
@@ -14,16 +13,28 @@ interface Message {
   content: string;
 }
 
+const markdownComponents = {
+  p: ({ node, ...props }: any) => <div className="mb-4" {...props} />,
+  a: ({ node, ...props }: any) => {
+    if (props.href?.startsWith("/job/")) {
+      const jobId = props.href.replace("/job/", "");
+      return <ChatJobCard jobId={jobId} />;
+    }
+    return <a {...props} />;
+  }
+};
+
 export function ChatInterface() {
-  const { 
-    messages, 
-    input, 
-    setInput, 
-    isLoading, 
-    loadingText, 
-    chatId, 
-    isInitializing, 
-    handleSubmit 
+
+  const {
+    messages,
+    input,
+    setInput,
+    isLoading,
+    loadingText,
+    chatId,
+    isInitializing,
+    handleSubmit
   } = useChat();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -98,18 +109,7 @@ export function ChatInterface() {
                         : "bg-surface border border-border text-text-primary rounded-bl-sm"
                         }`}>
                         <div className={`prose prose-sm md:prose-base max-w-none prose-p:text-current prose-headings:text-current prose-strong:text-current prose-li:text-current ${msg.role === "user" ? "text-white prose-invert" : "text-text-primary"}`}>
-                          <ReactMarkdown
-                            components={{
-                              p: ({ node, ...props }) => <div className="mb-4" {...props} />,
-                              a: ({ node, ...props }) => {
-                                if (props.href?.startsWith("/job/")) {
-                                  const jobId = props.href.replace("/job/", "");
-                                  return <ChatJobCard jobId={jobId} />;
-                                }
-                                return <a {...props} />;
-                              }
-                            }}
-                          >
+                          <ReactMarkdown components={markdownComponents}>
                             {msg.content.replace(/\[JOB_CARD:([a-zA-Z0-9-_]+)\]/g, '[Job Card](/job/$1)')}
                           </ReactMarkdown>
                         </div>

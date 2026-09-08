@@ -5,11 +5,12 @@ interface SearchJobsInput extends JsonObject {
   clerkId: string;
   searchTerm?: string;
   location?: string;
+  isRemote?: boolean;
 }
 
 export const searchJobsTool: Tool<SearchJobsInput, string> = {
   name: 'searchJobs',
-  description: 'Searches for job listings based on the user\'s clerkId (from system context), an optional search term (e.g., "Software Engineer"), and an optional location. The AI must ALWAYS provide the clerkId.',
+  description: 'Searches for job listings based on the user\'s clerkId (from system context). You can provide an optional search term (e.g., "Software Engineer") and an optional location. The AI must ALWAYS provide the clerkId. IMPORTANT: If the user specifically asks for remote jobs or opportunities, you MUST set the `isRemote` boolean to `true` instead of passing "remote" as a location string.',
   execute: async (input) => {
     try {
       if (!input.clerkId) {
@@ -19,7 +20,9 @@ export const searchJobsTool: Tool<SearchJobsInput, string> = {
       const jobs = await JobsService.autoLoadMatchingJobs(
         input.clerkId,
         input.searchTerm || undefined,
-        input.location || undefined
+        input.location || undefined,
+        0, // offset
+        input.isRemote
       );
 
       const jobsList = Array.isArray(jobs) ? jobs : (jobs.jobs || []);
@@ -59,6 +62,10 @@ export const searchJobsSchema = {
     location: {
       type: 'string',
       description: 'Optional. The location to search in.',
+    },
+    isRemote: {
+      type: 'boolean',
+      description: 'Optional. Set to true if the user is explicitly looking for remote jobs.',
     }
   },
   required: ['clerkId']

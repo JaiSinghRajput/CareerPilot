@@ -5,7 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { apiRequest } from "@/lib/api";
 import { Briefcase, MapPin, Building2, Calendar, Link as LinkIcon, ArrowLeft, ArrowUpRight, DollarSign, Clock, Users } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -31,6 +31,7 @@ interface Job {
 
 export default function JobDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const router = useRouter();
   const { getToken, isLoaded, isSignedIn } = useAuth();
   const [loading, setLoading] = useState(true);
   const [job, setJob] = useState<Job | null>(null);
@@ -43,7 +44,7 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
         if (!token) return;
 
         const result = await apiRequest(`/api/v1/jobs/${id}`, token);
-        
+
         if (result.success && result.data) {
           setJob(result.data);
         } else {
@@ -97,9 +98,9 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
         <Briefcase className="w-16 h-16 text-text-muted mb-4" />
         <h2 className="text-2xl font-bold mb-2">Job Not Found</h2>
         <p className="text-text-secondary mb-6">This job might have expired or doesn't exist in your recommendations cache.</p>
-        <Link href="/jobs" className="primary-button px-6 py-2">
-          Back to Jobs
-        </Link>
+        <button onClick={() => router.back()} className="primary-button px-6 py-2">
+          Back
+        </button>
       </div>
     );
   }
@@ -107,9 +108,9 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
   return (
     <div className="min-h-screen p-6 md:p-10">
       <div className="mx-auto max-w-4xl">
-        <Link href="/jobs" className="inline-flex items-center gap-2 text-text-secondary hover:text-primary font-medium mb-8 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Job Explorer
-        </Link>
+        <button onClick={() => router.back()} className="inline-flex items-center gap-2 text-text-secondary hover:text-primary font-medium mb-8 transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back
+        </button>
 
         {/* Header Card */}
         <div className="bg-surface border border-border rounded-3xl p-6 md:p-10 mb-8 shadow-xs">
@@ -124,7 +125,7 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
                   <Building2 className="w-10 h-10" />
                 </div>
               )}
-              
+
               <div>
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   <h1 className="text-2xl md:text-3xl font-bold text-text-primary">{job.title}</h1>
@@ -132,7 +133,7 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
                     {job.site}
                   </span>
                 </div>
-                
+
                 <div className="flex flex-wrap items-center gap-y-2 gap-x-6 text-text-secondary font-medium">
                   <a href={job.company_url || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
                     <Building2 className="w-4 h-4" /> {job.company}
@@ -146,8 +147,8 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
                 </div>
               </div>
             </div>
-            
-            <a 
+
+            <a
               href={job.job_url}
               target="_blank"
               rel="noopener noreferrer"
@@ -160,23 +161,23 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-background rounded-2xl border border-border">
             <div className="flex flex-col gap-1 p-3">
-              <span className="text-text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-1"><Clock className="w-3 h-3"/> Job Type</span>
+              <span className="text-text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-1"><Clock className="w-3 h-3" /> Job Type</span>
               <span className="font-semibold text-text-primary capitalize">{job.job_type?.replace(/_/g, ' ') || "Full-time"}</span>
             </div>
             <div className="flex flex-col gap-1 p-3">
-              <span className="text-text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3"/> Workplace</span>
+              <span className="text-text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-1"><MapPin className="w-3 h-3" /> Workplace</span>
               <span className="font-semibold text-text-primary">{job.is_remote ? "Remote" : "On-site"}</span>
             </div>
             <div className="flex flex-col gap-1 p-3">
-              <span className="text-text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3"/> Salary Range</span>
+              <span className="text-text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-1"><DollarSign className="w-3 h-3" /> Salary Range</span>
               <span className="font-semibold text-text-primary">
-                {job.min_amount && job.max_amount 
+                {job.min_amount && job.max_amount
                   ? `${job.currency === 'USD' ? '$' : job.currency || ''}${job.min_amount.toLocaleString()} - ${job.max_amount.toLocaleString()} ${job.interval === 'yearly' ? '/yr' : ''}`
                   : "Not specified"}
               </span>
             </div>
             <div className="flex flex-col gap-1 p-3">
-              <span className="text-text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-1"><Users className="w-3 h-3"/> Contact Emails</span>
+              <span className="text-text-muted text-xs font-semibold uppercase tracking-wider flex items-center gap-1"><Users className="w-3 h-3" /> Contact Emails</span>
               <span className="font-semibold text-text-primary truncate">
                 {job.emails && job.emails.length > 0 ? job.emails[0] : "None provided"}
               </span>
@@ -199,10 +200,10 @@ export default function JobDetailsPage({ params }: { params: Promise<{ id: strin
               <p className="text-text-muted italic">No detailed description was provided for this job. You can view the full details on the original listing.</p>
             )}
           </div>
-          
+
           <div className="mt-10 pt-6 border-t border-border flex justify-between items-center">
-             <span className="text-sm text-text-muted">Job ID: {job.id}</span>
-             <a href={job.job_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium text-sm">View Original Listing</a>
+            <span className="text-sm text-text-muted">Job ID: {job.id}</span>
+            <a href={job.job_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium text-sm">View Original Listing</a>
           </div>
         </div>
       </div>

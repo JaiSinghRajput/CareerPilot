@@ -18,33 +18,47 @@ interface Job {
   company_logo?: string;
 }
 
+const jobCache: Record<string, Job> = {};
+
 export function ChatJobCard({ jobId }: { jobId: string }) {
   const { getToken } = useAuth();
-  const [job, setJob] = useState<Job | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [job, setJob] = useState<Job | null>(jobCache[jobId] || null);
+  const [loading, setLoading] = useState(!jobCache[jobId]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    if (jobCache[jobId]) {
+      setJob(jobCache[jobId]);
+      setLoading(false);
+      return;
+    }
+
+    let mounted = true;
+    
     const fetchJob = async () => {
       try {
+        setLoading(true);
         const token = await getToken();
         if (!token) return;
         
         const result = await apiRequest(`/api/v1/jobs/${jobId}`, token);
         if (result.success && result.data) {
-          setJob(result.data);
+          jobCache[jobId] = result.data;
+          if (mounted) setJob(result.data);
         } else {
-          setError(true);
+          if (mounted) setError(true);
         }
       } catch (e) {
         console.error("Failed to fetch job", e);
-        setError(true);
+        if (mounted) setError(true);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
     
     fetchJob();
+    
+    return () => { mounted = false; };
   }, [jobId, getToken]);
 
   if (loading) {

@@ -9,6 +9,7 @@ export const usersTable = pgTable("users", {
     profilePictureUrl: varchar("profile_picture_url", { length: 255 }),
     subscriptionTier: varchar("subscription_tier", { length: 255 }).notNull().default("FREE"),
     isActive: boolean("is_active").notNull().default(true),
+    jobPreferences: jsonb("job_preferences"),
     lastLoginAt: timestamp("last_login_at"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -54,10 +55,31 @@ export const projectRecommendationsTable = pgTable("project_recommendations", {
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+export const jobsTable = pgTable("jobs", {
+    id: varchar("id", { length: 255 }).primaryKey(),
+    title: varchar("title", { length: 255 }),
+    company: varchar("company", { length: 255 }),
+    location: varchar("location", { length: 255 }),
+    jobUrl: text("job_url"),
+    description: text("description"),
+    datePosted: varchar("date_posted", { length: 255 }),
+    site: varchar("site", { length: 255 }),
+    companyLogo: text("company_logo"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const jobRecommendationsTable = pgTable("job_recommendations", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     userId: integer("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
-    jobs: jsonb("jobs"),
+    jobId: varchar("job_id", { length: 255 }).notNull().references(() => jobsTable.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const jobSearchesTable = pgTable("job_searches", {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    searchTerm: varchar("search_term", { length: 255 }).notNull(),
+    location: varchar("location", { length: 255 }).notNull(),
+    jobId: varchar("job_id", { length: 255 }).notNull().references(() => jobsTable.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
 });
