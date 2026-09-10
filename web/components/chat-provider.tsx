@@ -27,6 +27,10 @@ interface ChatContextType {
   setLoadingText: React.Dispatch<React.SetStateAction<string>>;
   chatId: number | null;
   setChatId: React.Dispatch<React.SetStateAction<number | null>>;
+  chatState: string;
+  setChatState: React.Dispatch<React.SetStateAction<string>>;
+  updateChatState: (newState: string) => Promise<void>;
+  hasResume: boolean;
   isInitializing: boolean;
   chatsList: Chat[];
   loadChatsList: () => Promise<void>;
@@ -34,6 +38,7 @@ interface ChatContextType {
   createNewChat: () => void;
   deleteChat: (e: React.MouseEvent, idToDelete: number) => Promise<void>;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
+  handleHiddenSubmit: (prompt: string) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -44,6 +49,8 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("Analyzing...");
   const [chatId, setChatId] = useState<number | null>(null);
+  const [chatState, setChatState] = useState("READY_FOR_CHAT");
+  const [hasResume, setHasResume] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [chatsList, setChatsList] = useState<Chat[]>([]);
   const { getToken, isLoaded, isSignedIn } = useAuth();
@@ -68,9 +75,16 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       if (!token) return;
       const url = targetChatId ? `/api/v1/ai/chat-history?chatId=${targetChatId}` : "/api/v1/ai/chat-history";
       const result = await apiRequest(url, token);
+      
+      // Also fetch resumes to see if user has one
+      const resumesResult = await apiRequest("/api/v1/ai/resumes", token);
+      const userHasResume = resumesResult.success && resumesResult.data && resumesResult.data.length > 0;
+      setHasResume(userHasResume);
+
       if (result.success && result.data && result.data.chat) {
         const { chat, messages: dbMessages } = result.data;
         setChatId(chat.id);
+        setChatState(chat.chatState || "READY_FOR_CHAT");
         if (dbMessages && dbMessages.length > 0) {
           const formattedMessages = dbMessages.map((msg: any) => ({
             id: msg.id.toString(),
@@ -84,6 +98,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
       } else {
         setChatId(null);
         setMessages([]);
+        if (!userHasResume) {
+          setChatState("CHOOSING_RESUME_SOURCE");
+        } else {
+          setChatState("READY_FOR_CHAT");
+        }
       }
     } catch (error) {
       console.error("Failed to load chat history:", error);
@@ -106,6 +125,27 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const createNewChat = () => {
     setChatId(null);
     setMessages([]);
+    if (!hasResume) {
+      setChatState("CHOOSING_RESUME_SOURCE");
+    } else {
+      setChatState("READY_FOR_CHAT");
+    }
+  };
+
+  const updateChatStateAPI = async (newState: string) => {
+    setChatState(newState);
+    if (!chatId) return;
+    try {
+      const token = await getToken();
+      if (!token) return;
+      await apiRequest(`/api/v1/ai/chats/${chatId}/state`, token, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ state: newState })
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const deleteChat = async (e: React.MouseEvent, idToDelete: number) => {
@@ -183,6 +223,51 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const handleHiddenSubmit = async (prompt: string) => {
+    if (isLoading) return;
+
+    setLoadingText("Reviewing Resume...");
+    setIsLoading(true);
+
+    try {
+      const token = await getToken();
+      if (!token) throw new Error("Not authenticated");
+
+      const data = await apiRequest("/api/v1/ai/chat", token, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt, chatId }),
+      });
+
+      if (data.data?.chatId) {
+        if (!chatId) {
+          setTimeout(() => loadChatsList(), 100);
+        }
+        setChatId(data.data.chatId);
+      }
+
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: data.data?.reply || "Done."
+      };
+
+      setMessages((prev) => [...prev, aiMessage]);
+    } catch (error: unknown) {
+      console.error(error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "Sorry, I encountered an error. Please try again."
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <ChatContext.Provider
       value={{
@@ -196,6 +281,10 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         setLoadingText,
         chatId,
         setChatId,
+        chatState,
+        setChatState,
+        updateChatState: updateChatStateAPI,
+        hasResume,
         isInitializing,
         chatsList,
         loadChatsList,
@@ -203,6 +292,7 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         createNewChat,
         deleteChat,
         handleSubmit,
+        handleHiddenSubmit,
       }}
     >
       {children}

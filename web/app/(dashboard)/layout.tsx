@@ -1,7 +1,6 @@
 import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
-import { Toaster } from "sonner";
 import { Sidebar } from "@/components/Sidebar";
 import { ModeToggle } from "@/components/ModeToggle";
 import { ModeRenderer } from "@/components/ModeRenderer";
@@ -37,7 +36,6 @@ export default function DashboardLayout({
           </main>
         </div>
       </ChatProvider>
-      <Toaster position="top-center" richColors />
     </div>
   );
 }

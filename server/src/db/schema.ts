@@ -25,6 +25,7 @@ export const resumesTable = pgTable("resumes", {
     summary: text("summary"), // AI generated summary
     feedback: jsonb("feedback"), // AI generated feedback array
     isBuilt: boolean("is_built").notNull().default(false), // Flag for resumes built from LinkedIn/GitHub
+    skippedFields: jsonb("skipped_fields"), // Tracks optional fields user refused to provide
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -33,6 +34,7 @@ export const chatsTable = pgTable("chats", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     userId: integer("user_id").notNull().references(() => usersTable.id, { onDelete: "cascade" }),
     title: varchar("title", { length: 255 }),
+    chatState: varchar("chat_state", { length: 50 }).notNull().default("READY_FOR_CHAT"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

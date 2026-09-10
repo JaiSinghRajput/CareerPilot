@@ -23,5 +23,6 @@ router.post('/projects/recommend', requireAuth, AIController.recommendProjects);
 router.get('/chat-history', requireAuth, AIController.getChatHistory);
 router.get('/chats', requireAuth, AIController.getChats);
 router.delete('/chats/:id', requireAuth, AIController.deleteChat);
+router.post('/chats/:id/state', requireAuth, AIController.updateChatState);
 
 export default router;

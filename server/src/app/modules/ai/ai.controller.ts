@@ -273,4 +273,33 @@ export class AIController {
       res.status(500).json({ success: false, message: error.message || 'Failed to delete chat' });
     }
   }
+
+  public static async updateChatState(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { state } = req.body;
+      const chatId = parseInt((id as string) || '', 10);
+
+      if (isNaN(chatId)) {
+        res.status(400).json({ success: false, message: 'Invalid chat ID' });
+        return;
+      }
+
+      const { userId: clerkId } = getAuth(req);
+      if (!clerkId) {
+        res.status(401).json({ success: false, message: 'Unauthorized' });
+        return;
+      }
+
+      await AIService.updateChatState(chatId, clerkId, state);
+
+      res.status(200).json({
+        success: true,
+        message: 'Chat state updated successfully',
+      });
+    } catch (error: any) {
+      console.error('Update chat state error:', error);
+      res.status(500).json({ success: false, message: error.message || 'Failed to update chat state' });
+    }
+  }
 }

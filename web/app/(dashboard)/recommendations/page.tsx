@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { apiRequest } from "@/lib/api";
-import { Lightbulb, Rocket, ChevronRight, Layers, Star, Code2 } from "lucide-react";
+import { Lightbulb, Rocket, ChevronRight, Layers, Star, Code2, X } from "lucide-react";
 
 interface ProjectRecommendation {
   title: string;
@@ -20,6 +20,7 @@ export default function RecommendationsPage() {
   const [recommendations, setRecommendations] = useState<ProjectRecommendation[]>([]);
   const [hasFetched, setHasFetched] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<ProjectRecommendation | null>(null);
 
   // Poll for status
   useEffect(() => {
@@ -156,7 +157,11 @@ export default function RecommendationsPage() {
         {!loading && hasFetched && recommendations.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {recommendations.map((project, idx) => (
-              <div key={idx} className="group rounded-3xl border border-border bg-surface hover:shadow-xl hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col">
+              <div 
+                key={idx} 
+                className="group rounded-3xl border border-border bg-surface hover:shadow-xl hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col cursor-pointer"
+                onClick={() => setSelectedProject(project)}
+              >
                 <div className="p-8 flex-1">
                   <div className="flex items-start justify-between mb-4">
                     <h3 className="text-2xl font-bold text-text-primary group-hover:text-primary transition-colors pr-4">
@@ -197,6 +202,10 @@ export default function RecommendationsPage() {
                       </p>
                     </div>
                   </div>
+                  
+                  <div className="flex justify-end mt-4 text-sm font-medium text-primary group-hover:underline flex items-center gap-1">
+                    View Detail <ChevronRight className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
             ))}
@@ -210,6 +219,72 @@ export default function RecommendationsPage() {
           </div>
         )}
       </div>
+
+      {/* Detail Modal */}
+      {selectedProject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-surface border border-border rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col relative animate-in zoom-in-95 duration-200">
+             <button 
+               onClick={() => setSelectedProject(null)}
+               className="absolute top-4 right-4 p-2 rounded-full hover:bg-surface-hover text-text-secondary transition-colors"
+             >
+               <X className="w-5 h-5" />
+             </button>
+             
+             <div className="p-8">
+               <div className="flex items-center gap-3 mb-6">
+                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0">
+                   <Rocket className="w-6 h-6" />
+                 </div>
+                 <div>
+                   <h2 className="text-2xl font-bold text-text-primary mb-1">{selectedProject.title}</h2>
+                   <span className={`inline-block px-2 py-0.5 text-xs font-bold uppercase tracking-wider rounded-full border ${getDifficultyColor(selectedProject.difficulty)}`}>
+                     {selectedProject.difficulty}
+                   </span>
+                 </div>
+               </div>
+
+               <div className="space-y-8">
+                 <div>
+                   <h3 className="text-lg font-semibold text-text-primary mb-3">Project Overview</h3>
+                   <p className="text-text-secondary leading-relaxed">{selectedProject.description}</p>
+                 </div>
+
+                 <div>
+                   <h3 className="text-lg font-semibold text-text-primary mb-3 flex items-center gap-2">
+                     <Code2 className="w-5 h-5 text-primary" /> Tools & Technologies
+                   </h3>
+                   <div className="flex flex-wrap gap-2">
+                     {selectedProject.technologies.map((tech, tIdx) => (
+                       <span key={tIdx} className="bg-surface-hover text-text-primary px-3 py-1.5 rounded-lg text-sm border border-border font-medium">
+                         {tech}
+                       </span>
+                     ))}
+                   </div>
+                 </div>
+
+                 <div className="p-6 bg-primary/5 rounded-2xl border border-primary/10">
+                   <h3 className="text-lg font-semibold text-text-primary mb-3 flex items-center gap-2">
+                     <Star className="w-5 h-5 text-yellow-500" /> Benefits & Skills Gained
+                   </h3>
+                   <p className="text-text-secondary leading-relaxed">
+                     {selectedProject.reasonToBuild}
+                   </p>
+                 </div>
+               </div>
+             </div>
+             
+             <div className="p-6 bg-surface-hover border-t border-border mt-auto flex justify-end">
+               <button 
+                 onClick={() => setSelectedProject(null)}
+                 className="px-6 py-2.5 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-colors"
+               >
+                 Close
+               </button>
+             </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
