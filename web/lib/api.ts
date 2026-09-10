@@ -1,4 +1,11 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const getApiUrl = () => {
+  let url = process.env.NEXT_PUBLIC_API_URL || "";
+  if (url && !url.startsWith("http://") && !url.startsWith("https://")) {
+    url = `https://${url}`;
+  }
+  return url;
+};
+const API_URL = getApiUrl();
 
 export async function apiRequest(
   endpoint: string,

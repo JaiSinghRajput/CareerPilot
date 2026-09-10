@@ -8,7 +8,7 @@ import { clerkMiddleware } from '@clerk/express';
 const app: Application = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({ origin: ['https://careerpilotai.in', 'https://www.careerpilotai.in', 'http://localhost:3000'], credentials: true }));
 // Webhook Routes (must be placed before express.json() to parse raw body)
 app.use('/api/v1/webhooks', webhookRoutes);
 
