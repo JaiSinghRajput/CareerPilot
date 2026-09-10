@@ -16,5 +16,9 @@ router.get('/resume/:id', requireAuth, AIController.getResumeById);
 router.delete('/resume/:id', requireAuth, AIController.deleteResume);
 router.get('/projects/recommend', requireAuth, AIController.getRecommendations);
 router.post('/projects/recommend', requireAuth, AIController.recommendProjects);
+router.get('/chat-history', requireAuth, AIController.getChatHistory);
+router.get('/chats', requireAuth, AIController.getChats);
+router.delete('/chats/:id', requireAuth, AIController.deleteChat);
+router.post('/chats/:id/state', requireAuth, AIController.updateChatState);
 export default router;
 //# sourceMappingURL=ai.route.js.map

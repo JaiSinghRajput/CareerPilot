@@ -8,12 +8,36 @@ export class JobsController {
                 res.status(401).json({ success: false, error: 'Unauthorized' });
                 return;
             }
-            const { searchTerm, location } = req.query;
-            const jobsData = await JobsService.autoLoadMatchingJobs(clerkId, searchTerm, location);
+            const { searchTerms, location, offset, isRemote } = req.query;
+            let parsedSearchTerms = undefined;
+            if (searchTerms) {
+                if (Array.isArray(searchTerms)) {
+                    parsedSearchTerms = searchTerms;
+                }
+                else if (typeof searchTerms === 'string') {
+                    parsedSearchTerms = [searchTerms];
+                }
+            }
+            const jobsData = await JobsService.autoLoadMatchingJobs(clerkId, parsedSearchTerms, location, offset ? parseInt(offset) : 0, isRemote === 'true' || isRemote === '1' ? true : (isRemote === 'false' || isRemote === '0' ? false : undefined));
             res.status(200).json({ success: true, data: jobsData });
         }
         catch (error) {
-            console.error('Error in getMatchingJobs:', error);
+            console.error('Error getting matching jobs:', error);
+            res.status(500).json({ success: false, error: error.message });
+        }
+    }
+    static async getJobTitleSuggestions(req, res) {
+        try {
+            const { q } = req.query;
+            if (!q || typeof q !== 'string') {
+                res.status(400).json({ success: false, error: 'Query parameter q is required' });
+                return;
+            }
+            const titles = await JobsService.suggestJobTitles(q);
+            res.status(200).json({ success: true, data: titles });
+        }
+        catch (error) {
+            console.error('Error getting job title suggestions:', error);
             res.status(500).json({ success: false, error: error.message });
         }
     }

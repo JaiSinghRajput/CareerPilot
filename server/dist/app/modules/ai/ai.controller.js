@@ -175,5 +175,95 @@ export class AIController {
             res.status(500).json({ success: false, message: error.message || 'Failed to start project recommendation' });
         }
     }
+    static async getChatHistory(req, res) {
+        try {
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            const chatIdParam = req.query.chatId;
+            let data;
+            if (chatIdParam) {
+                const chatId = parseInt(chatIdParam, 10);
+                if (isNaN(chatId)) {
+                    res.status(400).json({ success: false, message: 'Invalid chat ID' });
+                    return;
+                }
+                data = await AIService.getChatById(chatId, clerkId);
+            }
+            else {
+                data = await AIService.getLatestChat(clerkId);
+            }
+            res.status(200).json({
+                success: true,
+                data: data
+            });
+        }
+        catch (error) {
+            console.error('Get chat history error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to get chat history' });
+        }
+    }
+    static async getChats(req, res) {
+        try {
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            const chats = await AIService.getChatsList(clerkId);
+            res.status(200).json({ success: true, data: chats });
+        }
+        catch (error) {
+            console.error('Get chats error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to get chats' });
+        }
+    }
+    static async deleteChat(req, res) {
+        try {
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            const chatId = parseInt(req.params.id, 10);
+            if (isNaN(chatId)) {
+                res.status(400).json({ success: false, message: 'Invalid chat ID' });
+                return;
+            }
+            await AIService.deleteChat(chatId, clerkId);
+            res.status(200).json({ success: true, message: 'Chat deleted successfully' });
+        }
+        catch (error) {
+            console.error('Delete chat error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to delete chat' });
+        }
+    }
+    static async updateChatState(req, res) {
+        try {
+            const { id } = req.params;
+            const { state } = req.body;
+            const chatId = parseInt(id || '', 10);
+            if (isNaN(chatId)) {
+                res.status(400).json({ success: false, message: 'Invalid chat ID' });
+                return;
+            }
+            const { userId: clerkId } = getAuth(req);
+            if (!clerkId) {
+                res.status(401).json({ success: false, message: 'Unauthorized' });
+                return;
+            }
+            await AIService.updateChatState(chatId, clerkId, state);
+            res.status(200).json({
+                success: true,
+                message: 'Chat state updated successfully',
+            });
+        }
+        catch (error) {
+            console.error('Update chat state error:', error);
+            res.status(500).json({ success: false, message: error.message || 'Failed to update chat state' });
+        }
+    }
 }
 //# sourceMappingURL=ai.controller.js.map

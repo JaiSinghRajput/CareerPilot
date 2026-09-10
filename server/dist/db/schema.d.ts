@@ -122,6 +122,21 @@ export declare const usersTable: import("drizzle-orm/pg-core").PgTableWithColumn
             identity: undefined;
             generated: undefined;
         }>;
+        jobPreferences: import("drizzle-orm/pg-core").PgBuildColumn<"users", import("drizzle-orm/pg-core").PgJsonbBuilder, {
+            name: string;
+            tableName: "users";
+            dataType: "object json";
+            data: unknown;
+            driverParam: unknown;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
         lastLoginAt: import("drizzle-orm/pg-core").PgBuildColumn<"users", import("drizzle-orm/pg-core").PgTimestampBuilder, {
             name: string;
             tableName: "users";
@@ -309,6 +324,21 @@ export declare const resumesTable: import("drizzle-orm/pg-core").PgTableWithColu
             identity: undefined;
             generated: undefined;
         }>;
+        skippedFields: import("drizzle-orm/pg-core").PgBuildColumn<"resumes", import("drizzle-orm/pg-core").PgJsonbBuilder, {
+            name: string;
+            tableName: "resumes";
+            dataType: "object json";
+            data: unknown;
+            driverParam: unknown;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
         createdAt: import("drizzle-orm/pg-core").PgBuildColumn<"resumes", import("drizzle-orm/pg-core").SetHasDefault<import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgTimestampBuilder>>, {
             name: string;
             tableName: "resumes";
@@ -384,6 +414,21 @@ export declare const chatsTable: import("drizzle-orm/pg-core").PgTableWithColumn
             driverParam: string;
             notNull: false;
             hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        chatState: import("drizzle-orm/pg-core").PgBuildColumn<"chats", import("drizzle-orm/pg-core").SetHasDefault<import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>>>, {
+            name: string;
+            tableName: "chats";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
             isPrimaryKey: false;
             isAutoincrement: false;
             hasRuntimeDefault: false;
@@ -618,6 +663,163 @@ export declare const projectRecommendationsTable: import("drizzle-orm/pg-core").
     };
     dialect: 'pg';
 }>;
+export declare const jobsTable: import("drizzle-orm/pg-core").PgTableWithColumns<{
+    name: "jobs";
+    schema: undefined;
+    columns: {
+        id: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").SetIsPrimaryKey<import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        title: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        company: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        location: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        jobUrl: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").PgTextBuilder<[string, ...string[]]>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        description: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").PgTextBuilder<[string, ...string[]]>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        datePosted: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        site: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        companyLogo: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").PgTextBuilder<[string, ...string[]]>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        createdAt: import("drizzle-orm/pg-core").PgBuildColumn<"jobs", import("drizzle-orm/pg-core").SetHasDefault<import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgTimestampBuilder>>, {
+            name: string;
+            tableName: "jobs";
+            dataType: "object date";
+            data: Date;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+    };
+    dialect: 'pg';
+}>;
 export declare const jobRecommendationsTable: import("drizzle-orm/pg-core").PgTableWithColumns<{
     name: "job_recommendations";
     schema: undefined;
@@ -652,13 +854,13 @@ export declare const jobRecommendationsTable: import("drizzle-orm/pg-core").PgTa
             identity: undefined;
             generated: undefined;
         }>;
-        jobs: import("drizzle-orm/pg-core").PgBuildColumn<"job_recommendations", import("drizzle-orm/pg-core").PgJsonbBuilder, {
+        jobId: import("drizzle-orm/pg-core").PgBuildColumn<"job_recommendations", import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>>, {
             name: string;
             tableName: "job_recommendations";
-            dataType: "object json";
-            data: unknown;
-            driverParam: unknown;
-            notNull: false;
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: true;
             hasDefault: false;
             isPrimaryKey: false;
             isAutoincrement: false;
@@ -685,6 +887,88 @@ export declare const jobRecommendationsTable: import("drizzle-orm/pg-core").PgTa
         updatedAt: import("drizzle-orm/pg-core").PgBuildColumn<"job_recommendations", import("drizzle-orm/pg-core").SetHasDefault<import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgTimestampBuilder>>, {
             name: string;
             tableName: "job_recommendations";
+            dataType: "object date";
+            data: Date;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+    };
+    dialect: 'pg';
+}>;
+export declare const jobSearchesTable: import("drizzle-orm/pg-core").PgTableWithColumns<{
+    name: "job_searches";
+    schema: undefined;
+    columns: {
+        id: import("drizzle-orm/pg-core").PgBuildColumn<"job_searches", import("drizzle-orm/pg-core").HasIdentity<import("drizzle-orm/pg-core").SetIsPrimaryKey<import("drizzle-orm/pg-core").PgIntegerBuilder>, "always">, {
+            name: string;
+            tableName: "job_searches";
+            dataType: "number int32";
+            data: number;
+            driverParam: string | number;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: "always";
+            generated: undefined;
+        }>;
+        searchTerm: import("drizzle-orm/pg-core").PgBuildColumn<"job_searches", import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>>, {
+            name: string;
+            tableName: "job_searches";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        location: import("drizzle-orm/pg-core").PgBuildColumn<"job_searches", import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>>, {
+            name: string;
+            tableName: "job_searches";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        jobId: import("drizzle-orm/pg-core").PgBuildColumn<"job_searches", import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgVarcharBuilder<[string, ...string[]]>>, {
+            name: string;
+            tableName: "job_searches";
+            dataType: "string";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            identity: undefined;
+            generated: undefined;
+        }>;
+        createdAt: import("drizzle-orm/pg-core").PgBuildColumn<"job_searches", import("drizzle-orm/pg-core").SetHasDefault<import("drizzle-orm/pg-core").SetNotNull<import("drizzle-orm/pg-core").PgTimestampBuilder>>, {
+            name: string;
+            tableName: "job_searches";
             dataType: "object date";
             data: Date;
             driverParam: string;

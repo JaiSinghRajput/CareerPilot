@@ -10,6 +10,7 @@ export declare class BuilderService {
         isBuilt: boolean;
         originalFileName: string | null;
         parsedData: unknown;
+        skippedFields: unknown;
         storageUrl: string | null;
         summary: string | null;
         updatedAt: Date;

@@ -8,5 +8,9 @@ export declare class AIController {
     static deleteResume(req: Request, res: Response): Promise<void>;
     static getRecommendations(req: Request, res: Response): Promise<void>;
     static recommendProjects(req: Request, res: Response): Promise<void>;
+    static getChatHistory(req: Request, res: Response): Promise<void>;
+    static getChats(req: Request, res: Response): Promise<void>;
+    static deleteChat(req: Request, res: Response): Promise<void>;
+    static updateChatState(req: Request, res: Response): Promise<void>;
 }
 //# sourceMappingURL=ai.controller.d.ts.map

@@ -7,6 +7,11 @@ export declare class AIService {
     static processResumeUpload(fileBuffer: Buffer, originalFileName: string, clerkId: string): Promise<{
         resumeId: number;
         parsedData: {};
+        analysis: {
+            atsScore: number;
+            summary: string;
+            feedback: string[];
+        } | null;
     }>;
     static analyzeResume(resumeId: number, clerkId: string): Promise<{
         atsScore: number;
@@ -23,6 +28,7 @@ export declare class AIService {
         summary: string | null;
         feedback: unknown;
         isBuilt: boolean;
+        skippedFields: unknown;
         createdAt: Date;
         updatedAt: Date;
     }[]>;
@@ -36,6 +42,7 @@ export declare class AIService {
         summary: string | null;
         feedback: unknown;
         isBuilt: boolean;
+        skippedFields: unknown;
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -49,5 +56,51 @@ export declare class AIService {
         updatedAt: Date;
     } | null>;
     static recommendProjects(clerkId: string): Promise<boolean>;
+    static getLatestChat(clerkId: string): Promise<{
+        chat: {
+            id: number;
+            userId: number;
+            title: string | null;
+            chatState: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        messages: {
+            id: number;
+            chatId: number;
+            role: string;
+            content: string | null;
+            toolCalls: unknown;
+            createdAt: Date;
+        }[];
+    } | null>;
+    static getChatsList(clerkId: string): Promise<{
+        id: number;
+        userId: number;
+        title: string | null;
+        chatState: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }[]>;
+    static getChatById(chatId: number, clerkId: string): Promise<{
+        chat: {
+            id: number;
+            userId: number;
+            title: string | null;
+            chatState: string;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        messages: {
+            id: number;
+            chatId: number;
+            role: string;
+            content: string | null;
+            toolCalls: unknown;
+            createdAt: Date;
+        }[];
+    } | null>;
+    static deleteChat(chatId: number, clerkId: string): Promise<boolean>;
+    static updateChatState(chatId: number, clerkId: string, state: string): Promise<boolean>;
 }
 //# sourceMappingURL=ai.service.d.ts.map

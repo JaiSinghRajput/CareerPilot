@@ -19,7 +19,7 @@ export const searchJobsTool: Tool<SearchJobsInput, string> = {
 
       const jobs = await JobsService.autoLoadMatchingJobs(
         input.clerkId,
-        input.searchTerm || undefined,
+        input.searchTerm ? [input.searchTerm] : undefined,
         input.location || undefined,
         0, // offset
         input.isRemote
