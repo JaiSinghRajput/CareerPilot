@@ -58,10 +58,19 @@ export default function ResumeDetailPage() {
           const parsedSkills = pd.skills ? (Array.isArray(pd.skills) ? pd.skills.join(", ") : pd.skills) : "";
           const parsedRoles = pd.compatibleJobRoles ? (Array.isArray(pd.compatibleJobRoles) ? pd.compatibleJobRoles.join(", ") : pd.compatibleJobRoles) : "";
 
+          const formatLocation = (loc: any) => {
+            if (!loc) return "";
+            if (typeof loc === 'string') return loc;
+            if (typeof loc === 'object') {
+               return [loc.city, loc.district, loc.state, loc.country].filter(Boolean).join(", ");
+            }
+            return "";
+          };
+
           setName(pd.name || "");
           // Email might not be in the AI extraction schema by default, but keeping it if exists
           setEmail(pd.email || "");
-          setLocation(pd.location || "");
+          setLocation(formatLocation(pd.location));
           setCompatibleJobRoles(parsedRoles);
           setSkills(parsedSkills);
           setExperience(pd.experience || []);
@@ -71,7 +80,7 @@ export default function ResumeDetailPage() {
           setOriginalData({
             name: pd.name || "",
             email: pd.email || "",
-            location: pd.location || "",
+            location: formatLocation(pd.location),
             compatibleJobRoles: parsedRoles,
             skills: parsedSkills,
             experience: pd.experience || [],

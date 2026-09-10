@@ -16,12 +16,21 @@ export class AIService {
     const dbUserId = user.id;
 
     let currentChatId = chatId;
+    let chatState = "READY_FOR_CHAT";
+
     if (!currentChatId) {
       const chatRows = await db.insert(chatsTable).values({
         userId: dbUserId,
         title: prompt.substring(0, 50) + (prompt.length > 50 ? '...' : ''),
-      }).returning({ id: chatsTable.id });
+        chatState: "READY_FOR_CHAT"
+      }).returning({ id: chatsTable.id, chatState: chatsTable.chatState });
       currentChatId = chatRows[0]!.id;
+      chatState = chatRows[0]!.chatState;
+    } else {
+      const chatRows = await db.select().from(chatsTable).where(eq(chatsTable.id, currentChatId)).limit(1);
+      if (chatRows.length > 0) {
+        chatState = chatRows[0]!.chatState;
+      }
     }
 
     // Save user message to DB
@@ -51,7 +60,7 @@ export class AIService {
     }));
 
     // Inject Context into SYSTEM PROMPT
-    const contextInjectedPrompt = `${SYSTEM_PROMPT}\n\n=== USER CONTEXT ===\n- User Name: ${user.name}\n- Clerk ID (pass this to tools): ${clerkId}\n- Latest Resume Data: ${resumeContext}\n===================`;
+    const contextInjectedPrompt = `${SYSTEM_PROMPT}\n\n=== USER CONTEXT ===\n- User Name: ${user.name}\n- Clerk ID (pass this to tools): ${clerkId}\n- Latest Resume Data: ${resumeContext}\n- Current Chat State: ${chatState}\n\nIf Current Chat State is COLLECTING_MISSING_INFO, you should proactively ask the user to provide missing resume details (like GitHub or LinkedIn URLs). If they provide them, ALWAYS use the updateResume tool to append the new data to their resume. If they refuse, use the updateChatState tool to change the state back to READY_FOR_CHAT.\n===================`;
 
     const messages: Message[] = [
       { role: 'system', content: [{ type: 'text', text: contextInjectedPrompt }] },
@@ -139,14 +148,24 @@ export class AIService {
     }
 
     // 2. Use AI to extract structured JSON data
+    const currentDate = new Date().toISOString().split('T')[0];
     const parsePrompt = `Extract the following structured information from the provided resume text.
 Return ONLY valid JSON matching this structure exactly (no markdown formatting, no code blocks around the JSON).
 Always use exactly these keys for experience and education. Do not invent new keys like 'class' or 'result'. Map them to the provided keys.
 For experience, extract all the detailed bullet points, achievements, and responsibilities into the 'bulletPoints' array so NO information is lost.
 Infer a few compatible job roles for the candidate based on their profile.
+Pay very close attention to extracting all URLs including GitHub, LinkedIn, portfolios, and project live links if they exist in the text.
+The current date is ${currentDate}. Use this context to properly interpret dates. Ensure no past dates are incorrectly parsed as future dates, and correctly identify current ongoing roles.
 
 {
   "name": "Full Name",
+  "contact": {
+    "email": "email or null",
+    "phone": "phone or null",
+    "linkedin": "linkedin url or null",
+    "github": "github url or null",
+    "portfolio": "portfolio url or null"
+  },
   "location": {
     "city": "City Name or null",
     "district": "District Name or null",
@@ -211,9 +230,43 @@ ${extractedText.substring(0, 4000)} // Limit length if necessary
       summary: 'Automatically parsed resume',
     }).returning({ id: resumesTable.id });
 
+    // Auto-analyze
+    let analysisData = null;
+    try {
+      analysisData = await AIService.analyzeResume(resumeRows[0]!.id, clerkId);
+    } catch(e) {
+      console.error("Auto-analysis failed", e);
+    }
+
+    // Replace [RESUME_UPLOAD_INPUT] with [UPLOAD_SUCCESS("filename.ext")] in the latest chat
+    try {
+      const latestChats = await db.select().from(chatsTable)
+        .where(eq(chatsTable.userId, dbUserId))
+        .orderBy(desc(chatsTable.updatedAt))
+        .limit(1);
+
+      if (latestChats.length > 0) {
+        const latestChat = latestChats[0]!;
+        
+        const messages = await db.select().from(messagesTable)
+          .where(eq(messagesTable.chatId, latestChat.id))
+          .orderBy(desc(messagesTable.createdAt));
+          
+        const targetMessage = messages.find((m: any) => m.content && m.content.includes('[RESUME_UPLOAD_INPUT]'));
+        if (targetMessage && targetMessage.content) {
+          await db.update(messagesTable)
+            .set({ content: targetMessage.content.replace('[RESUME_UPLOAD_INPUT]', `[UPLOAD_SUCCESS("${originalFileName}")]`) })
+            .where(eq(messagesTable.id, targetMessage.id));
+        }
+      }
+    } catch (e) {
+      console.error("Failed to update message template", e);
+    }
+
     return {
       resumeId: resumeRows[0]!.id,
       parsedData: parsedData,
+      analysis: analysisData
     };
   }
 
@@ -513,6 +566,24 @@ ${JSON.stringify(existingProjects)}
     }
 
     await db.delete(chatsTable).where(eq(chatsTable.id, chatId));
+    return true;
+  }
+
+  public static async updateChatState(chatId: number, clerkId: string, state: string) {
+    const userRows = await db.select().from(usersTable).where(eq(usersTable.clerkId, clerkId)).limit(1);
+    if (!userRows.length) throw new Error('User not found');
+    const dbUserId = userRows[0]!.id;
+
+    const chatRows = await db.select()
+      .from(chatsTable)
+      .where(eq(chatsTable.id, chatId))
+      .limit(1);
+    
+    if (!chatRows.length || chatRows[0]!.userId !== dbUserId) {
+      throw new Error('Chat not found or unauthorized');
+    }
+
+    await db.update(chatsTable).set({ chatState: state }).where(eq(chatsTable.id, chatId));
     return true;
   }
 }

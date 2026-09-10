@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "sonner";
 
 import "./globals.css";
 import { ModeProvider } from "@/components/mode-provider";
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
           <ModeProvider>
             {children}
+            <Toaster richColors position="bottom-right" />
           </ModeProvider>
         </body>
       </html>

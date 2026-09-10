@@ -18,7 +18,7 @@ export const recommendProjectsTool: Tool<RecommendProjectsInput, string> = {
 
       return JSON.stringify({
         success: true,
-        projects: projects
+        message: 'Background recommendation generation started successfully. You MUST output exactly: "Here are some projects that you can build: \\n\\n[PROJECT_RECOMMENDATIONS]" in your message to render the UI component.'
       });
     } catch (e: any) {
       return JSON.stringify({ error: `Failed to fetch project recommendations: ${e.message}` });
