@@ -172,6 +172,8 @@ ${JSON.stringify(parsedData)}
       });
 
       if (!runRes.ok) {
+        const errData = await runRes.text();
+        console.error(`[LinkedIn Scraper] Apify Run failed with status ${runRes.status}. Response: ${errData}`);
         throw new Error(`Apify Run failed with status ${runRes.status}`);
       }
 
@@ -192,7 +194,7 @@ ${JSON.stringify(parsedData)}
       return null;
 
     } catch (error) {
-      console.error("Error fetching LinkedIn data via Apify:", error);
+      console.error("[LinkedIn Scraper] Exception while fetching LinkedIn data via Apify:", error);
       return null; // Return null so it doesn't fail the whole process
     }
   }
@@ -216,7 +218,8 @@ ${JSON.stringify(parsedData)}
 
       const profileRes = await fetch(`https://api.github.com/users/${cleanUsername}`, { headers });
       if (!profileRes.ok) {
-        console.error(`GitHub API returned ${profileRes.status} for user ${cleanUsername}`);
+        const errData = await profileRes.text();
+        console.error(`[GitHub Scraper] GitHub API returned ${profileRes.status} for user ${cleanUsername}. Response: ${errData}`);
         return null;
       }
       const profile = await profileRes.json();
@@ -236,7 +239,7 @@ ${JSON.stringify(parsedData)}
       return { profile, repos: simplifiedRepos };
 
     } catch (error) {
-      console.error("Error fetching GitHub data:", error);
+      console.error("[GitHub Scraper] Exception while fetching GitHub data:", error);
       return null;
     }
   }
