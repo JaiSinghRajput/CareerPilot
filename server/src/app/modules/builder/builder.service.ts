@@ -192,8 +192,8 @@ ${JSON.stringify(parsedData)}
          throw new Error("No dataset ID returned from Apify");
       }
 
-      // Fetch the dataset items
-      const datasetRes = await fetch(`https://api.apify.com/v2/datasets/${datasetId}/items`);
+      // Fetch the dataset items using the token
+      const datasetRes = await fetch(`https://api.apify.com/v2/datasets/${datasetId}/items?token=${apifyToken}`);
       const items = await datasetRes.json();
 
       if (items && items.length > 0) {
