@@ -10,14 +10,22 @@ export class BuilderService {
   public async generateResume(userId: number, linkedInUrl: string, githubUsername: string) {
 
     
-    // 1. Fetch Data from LinkedIn and GitHub concurrently (if both are provided)
-    const [linkedInData, githubData] = await Promise.all([
-      linkedInUrl ? this.fetchLinkedInData(linkedInUrl) : Promise.resolve(null),
-      githubUsername ? this.fetchGitHubData(githubUsername) : Promise.resolve(null)
-    ]);
+    // 1. Fetch Data sequentially (LinkedIn first, then GitHub)
+    let linkedInData = null;
+    let githubData = null;
 
-    if (!linkedInData && !githubData) {
-      throw new Error("Failed to retrieve LinkedIn/GitHub profile data. Please try again or contact support.");
+    if (linkedInUrl) {
+      linkedInData = await this.fetchLinkedInData(linkedInUrl);
+      if (!linkedInData) {
+        throw new Error("Failed to retrieve LinkedIn profile data. Please check the URL or try again later.");
+      }
+    }
+
+    if (githubUsername) {
+      githubData = await this.fetchGitHubData(githubUsername);
+      if (!githubData) {
+        throw new Error("Failed to retrieve GitHub profile data. Please check the username/URL or try again later.");
+      }
     }
 
     // 2. Format the raw data for the AI
@@ -191,6 +199,8 @@ ${JSON.stringify(parsedData)}
       if (items && items.length > 0) {
         return items[0]; // Return the first profile data
       }
+      
+      console.error("[LinkedIn Scraper] Apify completed successfully but returned an empty dataset. The URL may be invalid or the profile is hidden.");
       return null;
 
     } catch (error) {
