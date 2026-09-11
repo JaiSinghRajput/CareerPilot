@@ -1,7 +1,7 @@
 import db from '../../../db/db.js';
 import { usersTable, chatsTable, messagesTable, resumesTable, projectRecommendationsTable } from '../../../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
-import { aiGateway, askAI, SYSTEM_PROMPT } from '../../../ai/index.js';
+import { runAIGateway, askAI, SYSTEM_PROMPT } from '../../../ai/index.js';
 import { CloudinaryService } from '../../utils/cloudinary.js';
 export class AIService {
     static async processChat(prompt, clerkId, chatId) {
@@ -166,7 +166,7 @@ ${extractedText.substring(0, 4000)} // Limit length if necessary
             { role: 'system', content: [{ type: 'text', text: 'You are a data extraction bot. You only output pure JSON without any surrounding text or markdown blocks.' }] },
             { role: 'user', content: [{ type: 'text', text: parsePrompt }] }
         ];
-        const result = await aiGateway.run(extractionMessages);
+        const result = await runAIGateway(extractionMessages);
         let aiText = '';
         if (result.response?.message) {
             const msg = result.response.message;
@@ -278,7 +278,7 @@ ${JSON.stringify(resume.parsedData)}
             { role: 'system', content: [{ type: 'text', text: 'You are an expert AI career counselor and ATS evaluator. You only output pure JSON without any surrounding text or markdown blocks.' }] },
             { role: 'user', content: [{ type: 'text', text: analysisPrompt }] }
         ];
-        const result = await aiGateway.run(extractionMessages);
+        const result = await runAIGateway(extractionMessages);
         let aiText = '';
         if (result.response?.message) {
             const msg = result.response.message;
@@ -414,7 +414,7 @@ ${JSON.stringify(existingProjects)}
                     { role: 'system', content: [{ type: 'text', text: 'You are an expert AI career advisor. You only output pure JSON without any surrounding text or markdown blocks.' }] },
                     { role: 'user', content: [{ type: 'text', text: prompt }] }
                 ];
-                const result = await aiGateway.run(extractionMessages);
+                const result = await runAIGateway(extractionMessages);
                 let aiText = '';
                 if (result.response?.message) {
                     const msg = result.response.message;

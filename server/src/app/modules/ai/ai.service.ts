@@ -1,7 +1,7 @@
 import db from '../../../db/db.js';
 import { usersTable, chatsTable, messagesTable, resumesTable, projectRecommendationsTable } from '../../../db/schema.js';
 import { eq, desc } from 'drizzle-orm';
-import { aiGateway, askAI, SYSTEM_PROMPT } from '../../../ai/index.js';
+import { runAIGateway, askAI, SYSTEM_PROMPT } from '../../../ai/index.js';
 import { CloudinaryService } from '../../utils/cloudinary.js';
 import type { Message } from 'agenix';
 
@@ -188,7 +188,7 @@ ${extractedText.substring(0, 4000)} // Limit length if necessary
       { role: 'user', content: [{ type: 'text', text: parsePrompt }] }
     ];
 
-    const result = await aiGateway.run(extractionMessages);
+    const result = await runAIGateway(extractionMessages);
     
     let aiText = '';
     if (result.response?.message) {
@@ -314,7 +314,7 @@ ${JSON.stringify(resume.parsedData)}
       { role: 'user', content: [{ type: 'text', text: analysisPrompt }] }
     ];
 
-    const result = await aiGateway.run(extractionMessages);
+    const result = await runAIGateway(extractionMessages);
     
     let aiText = '';
     if (result.response?.message) {
@@ -473,7 +473,7 @@ ${JSON.stringify(existingProjects)}
           { role: 'user', content: [{ type: 'text', text: prompt }] }
         ];
 
-        const result = await aiGateway.run(extractionMessages);
+        const result = await runAIGateway(extractionMessages);
         
         let aiText = '';
         if (result.response?.message) {

@@ -1,44 +1,80 @@
-import { Agent, OpenAICompatibleProvider, GeminiCompatibleProvider, AgentEventBus } from 'agenix';
+import { Agent, OpenAICompatibleProvider, AgentEventBus } from 'agenix';
 import dotenv from 'dotenv';
 import { analyzeResumeTool, analyzeResumeSchema, updateResumeTool, updateResumeSchema, updateChatStateTool, updateChatStateSchema } from './tools/resumeTools.js';
 import { searchJobsTool, searchJobsSchema } from './tools/jobSpyTool.js';
 import { recommendProjectsTool, recommendProjectsSchema } from './tools/projectTool.js';
 dotenv.config();
-// Existing Provider for General System (ATS, Recommendations, etc.)
-const aiProvider = new OpenAICompatibleProvider({
+// --- General System (ATS, Recommendations, etc.) ---
+// Primary
+const primaryAiProvider = new OpenAICompatibleProvider({
     apiKey: process.env.AI_API_KEY ?? process.env.OPENAI_API_KEY ?? 'local-key',
     baseURL: process.env.AI_API_URL ?? "https://api.openai.com/api/v1",
 });
-// Dedicated Provider for Chat Mode (OpenRouter / Custom)
-const chatProvider = new OpenAICompatibleProvider({
+// Fallback
+const fallbackAiProvider = new OpenAICompatibleProvider({
+    apiKey: process.env.FALLBACK_AI_API_KEY ?? 'fallback-key',
+    baseURL: process.env.FALLBACK_AI_API_URL ?? "https://api.openai.com/api/v1",
+});
+// --- Chat Mode (OpenRouter / Custom) ---
+// Primary
+const primaryChatProvider = new OpenAICompatibleProvider({
     baseURL: process.env.CHAT_LLM_API_BASE_URL,
     apiKey: process.env.CHAT_LLM_API_KEY,
 });
+// Fallback
+const fallbackChatProvider = new OpenAICompatibleProvider({
+    baseURL: process.env.FALLBACK_CHAT_LLM_API_BASE_URL,
+    apiKey: process.env.FALLBACK_CHAT_LLM_API_KEY,
+});
 export const aiEvents = new AgentEventBus();
-// Basic Gateway Agent Initialization (General System)
-export const aiGateway = new Agent({
-    provider: aiProvider,
-    model: process.env.EDEN_MODEL_NAME ?? 'openai/gpt-4o-mini',
-    events: aiEvents,
-    loggerEnabled: true,
-    preferStreaming: false,
-});
-// Chat Gateway Agent Initialization (Custom Chat Model)
-export const chatGateway = new Agent({
-    provider: chatProvider,
-    model: process.env.CHAT_MODEL_NAME ?? 'openrouter/auto',
-    events: aiEvents,
-    loggerEnabled: true,
-    preferStreaming: false,
-});
-// Register tools on general gateway
-aiGateway.getEngine().getToolRegistry().register(analyzeResumeTool, analyzeResumeSchema);
-// Register tools on chat gateway
-chatGateway.getEngine().getToolRegistry().register(analyzeResumeTool, analyzeResumeSchema);
-chatGateway.getEngine().getToolRegistry().register(searchJobsTool, searchJobsSchema);
-chatGateway.getEngine().getToolRegistry().register(recommendProjectsTool, recommendProjectsSchema);
-chatGateway.getEngine().getToolRegistry().register(updateResumeTool, updateResumeSchema);
-chatGateway.getEngine().getToolRegistry().register(updateChatStateTool, updateChatStateSchema);
+// General System Agents Array
+export const aiGateways = [
+    new Agent({
+        provider: primaryAiProvider,
+        model: process.env.AI_MODEL_NAME ?? 'openai/gpt-4o-mini',
+        events: aiEvents,
+        loggerEnabled: true,
+        preferStreaming: false,
+    }),
+    new Agent({
+        provider: fallbackAiProvider,
+        model: process.env.FALLBACK_AI_MODEL_NAME ?? 'openai/gpt-4o',
+        events: aiEvents,
+        loggerEnabled: true,
+        preferStreaming: false,
+    })
+];
+// Keep aiGateway exported for backwards compatibility with anything else referencing it, using primary
+export const aiGateway = aiGateways[0];
+// Chat System Agents Array
+export const chatGateways = [
+    new Agent({
+        provider: primaryChatProvider,
+        model: process.env.CHAT_MODEL_NAME ?? 'openrouter/auto',
+        events: aiEvents,
+        loggerEnabled: true,
+        preferStreaming: false,
+    }),
+    new Agent({
+        provider: fallbackChatProvider,
+        model: process.env.FALLBACK_CHAT_MODEL_NAME ?? 'openai/gpt-4o-mini',
+        events: aiEvents,
+        loggerEnabled: true,
+        preferStreaming: false,
+    })
+];
+// Register tools on all general gateways
+for (const gateway of aiGateways) {
+    gateway.getEngine().getToolRegistry().register(analyzeResumeTool, analyzeResumeSchema);
+}
+// Register tools on all chat gateways
+for (const gateway of chatGateways) {
+    gateway.getEngine().getToolRegistry().register(analyzeResumeTool, analyzeResumeSchema);
+    gateway.getEngine().getToolRegistry().register(searchJobsTool, searchJobsSchema);
+    gateway.getEngine().getToolRegistry().register(recommendProjectsTool, recommendProjectsSchema);
+    gateway.getEngine().getToolRegistry().register(updateResumeTool, updateResumeSchema);
+    gateway.getEngine().getToolRegistry().register(updateChatStateTool, updateChatStateSchema);
+}
 export const SYSTEM_PROMPT = `You are a helpful, advanced AI assistant integrated directly into the CareerPilot application.
 Your goal is to help users improve their resumes, prepare for interviews, suggest projects, and find jobs.
 Be concise, professional, and actionable in your advice.
@@ -63,14 +99,32 @@ Formatting guidelines:
 - Use standard markdown formatting.
 - Format file names, paths, and function names with \`inline code\` backticks.
 - **For all mathematical expressions, you must use dollar-sign delimiters. Use $...$ for inline math and $$...$$ for block math. Do not use (...) or [...] delimiters.**`;
+/**
+ * Executes a list of AI agents in order. If one fails, it catches the error and tries the next one.
+ */
+async function executeWithFallback(gateways, messages) {
+    let lastError = null;
+    for (let i = 0; i < gateways.length; i++) {
+        try {
+            if (i > 0) {
+                console.log(`[AI Fallback] Retrying request with fallback configuration (Attempt ${i + 1})`);
+            }
+            const gateway = gateways[i];
+            const result = await gateway.run(messages);
+            return result;
+        }
+        catch (error) {
+            console.error(`[AI Error] Gateway at index ${i} failed:`, error?.message || error);
+            lastError = error;
+        }
+    }
+    console.error('[AI Fatal Error] All fallback gateways failed.');
+    throw lastError || new Error('All AI gateways failed.');
+}
 export async function askAI(messages) {
-    try {
-        const result = await chatGateway.run(messages);
-        return result;
-    }
-    catch (error) {
-        console.error('Error in askAI:', error);
-        throw error;
-    }
+    return await executeWithFallback(chatGateways, messages);
+}
+export async function runAIGateway(messages) {
+    return await executeWithFallback(aiGateways, messages);
 }
 //# sourceMappingURL=index.js.map

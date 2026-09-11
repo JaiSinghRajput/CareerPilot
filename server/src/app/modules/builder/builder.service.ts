@@ -1,6 +1,6 @@
 import { db } from "../../../db/index.js";
 import { resumesTable } from "../../../db/schema.js";
-import { aiGateway } from "../../../ai/index.js";
+import { runAIGateway } from "../../../ai/index.js";
 import type { Message } from "agenix";
 
 export class BuilderService {
@@ -71,7 +71,7 @@ ${JSON.stringify(rawData, null, 2).substring(0, 8000)} // Limiting to prevent to
       { role: 'user', content: [{ type: 'text', text: extractionPrompt }] }
     ];
 
-    const result = await aiGateway.run(extractionMessages);
+    const result = await runAIGateway(extractionMessages);
     let parsedData;
     let aiText = '';
     if (result.response?.message) {
@@ -115,7 +115,7 @@ ${JSON.stringify(parsedData)}
       { role: 'user', content: [{ type: 'text', text: analysisPrompt }] }
     ];
 
-    const analysisResult = await aiGateway.run(analysisMessages);
+    const analysisResult = await runAIGateway(analysisMessages);
     let analysisData = { atsScore: 0, summary: "", feedback: [] };
     let aiAnalysisText = '';
     
