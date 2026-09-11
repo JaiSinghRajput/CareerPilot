@@ -36,19 +36,31 @@ export const aiEvents = new AgentEventBus();
 
 // General System Agents Array
 export const aiGateways = [
-  new Agent({
+  Object.assign(new Agent({
     provider: primaryAiProvider,
     model: process.env.AI_MODEL_NAME ?? 'openai/gpt-4o-mini',
     events: aiEvents,
     loggerEnabled: true,
     preferStreaming: false,
+  }), {
+    _meta: {
+      providerURL: process.env.AI_API_URL ?? "https://api.openai.com/api/v1",
+      apiKey: process.env.AI_API_KEY ?? process.env.OPENAI_API_KEY ?? 'local-key',
+      model: process.env.AI_MODEL_NAME ?? 'openai/gpt-4o-mini',
+    }
   }),
-  new Agent({
+  Object.assign(new Agent({
     provider: fallbackAiProvider,
     model: process.env.FALLBACK_AI_MODEL_NAME ?? 'openai/gpt-4o',
     events: aiEvents,
     loggerEnabled: true,
     preferStreaming: false,
+  }), {
+    _meta: {
+      providerURL: process.env.FALLBACK_AI_API_URL ?? "https://api.openai.com/api/v1",
+      apiKey: process.env.FALLBACK_AI_API_KEY ?? 'fallback-key',
+      model: process.env.FALLBACK_AI_MODEL_NAME ?? 'openai/gpt-4o',
+    }
   })
 ];
 
@@ -57,19 +69,31 @@ export const aiGateway = aiGateways[0];
 
 // Chat System Agents Array
 export const chatGateways = [
-  new Agent({
+  Object.assign(new Agent({
     provider: primaryChatProvider,
     model: process.env.CHAT_MODEL_NAME ?? 'openrouter/auto',
     events: aiEvents,
     loggerEnabled: true,
     preferStreaming: false,
+  }), {
+    _meta: {
+      providerURL: process.env.CHAT_LLM_API_BASE_URL as string,
+      apiKey: process.env.CHAT_LLM_API_KEY as string,
+      model: process.env.CHAT_MODEL_NAME ?? 'openrouter/auto',
+    }
   }),
-  new Agent({
+  Object.assign(new Agent({
     provider: fallbackChatProvider,
     model: process.env.FALLBACK_CHAT_MODEL_NAME ?? 'openai/gpt-4o-mini',
     events: aiEvents,
     loggerEnabled: true,
     preferStreaming: false,
+  }), {
+    _meta: {
+      providerURL: process.env.FALLBACK_CHAT_LLM_API_BASE_URL as string,
+      apiKey: process.env.FALLBACK_CHAT_LLM_API_KEY as string,
+      model: process.env.FALLBACK_CHAT_MODEL_NAME ?? 'openai/gpt-4o-mini',
+    }
   })
 ];
 
@@ -123,20 +147,33 @@ async function executeWithFallback(gateways: Agent[], messages: Message[]) {
   console.info(`================================`);
 
   for (let i = 0; i < gateways.length; i++) {
+    const gateway = gateways[i]!;
+    const meta = (gateway as any)._meta;
+    
     try {
       if (i > 0) {
         console.info(`[AI Fallback] Retrying request with fallback configuration (Attempt ${i + 1})`);
       }
-      const gateway = gateways[i]!;
+      
+      console.info(`[AI Execution] Running Gateway ${i} | Model: ${meta?.model} | Provider URL: ${meta?.providerURL} | API Key: ${meta?.apiKey}`);
+
       const result = await gateway.run(messages);
       
-      console.info(`\n========== AI RESPONSE (Gateway ${i}) ==========`);
+      console.info(`\n========== AI RESPONSE (Gateway ${i} - ${meta?.model}) ==========`);
       console.info(JSON.stringify(result, null, 2));
       console.info(`=================================================`);
 
       return result;
     } catch (error: any) {
-      console.error(`[AI Error] Gateway at index ${i} failed:`, error?.message || error);
+      console.error(`[AI Error] Gateway ${i} failed. | Model: ${meta?.model} | Provider URL: ${meta?.providerURL} | API Key: ${meta?.apiKey}`);
+      
+      // Log the full error object, response, and cause to capture maximum context
+      console.error(`Error Message:`, error?.message);
+      if (error?.cause) console.error(`Error Cause:`, error.cause);
+      if (error?.response?.data || error?.response?.body) console.error(`Error Response Body:`, error.response.data || error.response.body);
+      
+      console.error(`Full Error Object:`, error);
+      
       lastError = error;
     }
   }
