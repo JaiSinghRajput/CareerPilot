@@ -65,7 +65,7 @@ export default function DashboardPage() {
 
   async function handleDelete(id: number) {
     if (!confirm("Are you sure you want to delete this resume? This action cannot be undone.")) return;
-    
+
     setDeletingId(id);
     const toastId = toast.loading("Deleting resume...", { position: "bottom-right" });
     try {
@@ -96,7 +96,7 @@ export default function DashboardPage() {
             Manage your resumes and view AI-powered analysis.
           </p>
         </div>
-        <Link href="/resume" className="primary-button text-sm px-4 py-2">
+        <Link href="/resumes/upload" className="primary-button text-sm px-4 py-2">
           Upload New Resume
         </Link>
       </div>
@@ -166,7 +166,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={() => handleDelete(resume.id)}
                   disabled={deletingId === resume.id}
                   className={`p-2 text-text-muted hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors ${deletingId === resume.id ? 'opacity-50 cursor-not-allowed' : ''}`}

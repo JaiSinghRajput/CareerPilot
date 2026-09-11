@@ -117,13 +117,23 @@ Formatting guidelines:
  */
 async function executeWithFallback(gateways: Agent[], messages: Message[]) {
   let lastError: Error | null = null;
+
+  console.info(`\n========== AI REQUEST ==========`);
+  console.info(JSON.stringify(messages, null, 2));
+  console.info(`================================`);
+
   for (let i = 0; i < gateways.length; i++) {
     try {
       if (i > 0) {
-        console.log(`[AI Fallback] Retrying request with fallback configuration (Attempt ${i + 1})`);
+        console.info(`[AI Fallback] Retrying request with fallback configuration (Attempt ${i + 1})`);
       }
       const gateway = gateways[i]!;
       const result = await gateway.run(messages);
+      
+      console.info(`\n========== AI RESPONSE (Gateway ${i}) ==========`);
+      console.info(JSON.stringify(result, null, 2));
+      console.info(`=================================================`);
+
       return result;
     } catch (error: any) {
       console.error(`[AI Error] Gateway at index ${i} failed:`, error?.message || error);

@@ -72,7 +72,7 @@ export const clerkWebhookHandler = async (req: express.Request, res: express.Res
         profilePictureUrl: imageUrl,
       });
 
-      console.log(`User ${id} inserted successfully`);
+
     } else if (eventType === 'user.updated') {
       const email = evt.data.email_addresses?.[0]?.email_address;
       const firstName = evt.data.first_name || '';
@@ -90,7 +90,7 @@ export const clerkWebhookHandler = async (req: express.Request, res: express.Res
         })
         .where(eq(usersTable.clerkId, id));
 
-      console.log(`User ${id} updated successfully`);
+
     } else if (eventType === 'user.deleted') {
       // Depending on your logic, you can delete or mark as inactive
       await db
@@ -101,7 +101,7 @@ export const clerkWebhookHandler = async (req: express.Request, res: express.Res
         })
         .where(eq(usersTable.clerkId, id));
 
-      console.log(`User ${id} marked as inactive successfully`);
+
     }
 
     res.status(200).json({ success: true, message: 'Webhook received' });

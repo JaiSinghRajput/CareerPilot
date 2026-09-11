@@ -8,7 +8,7 @@ export class BuilderService {
    * Scrapes LinkedIn and fetches GitHub data, then uses AI to build a structured JSON resume.
    */
   public async generateResume(userId: number, linkedInUrl: string, githubUsername: string) {
-    console.log(`Generating resume for User ${userId}...`);
+
     
     // 1. Fetch Data from LinkedIn and GitHub concurrently (if both are provided)
     const [linkedInData, githubData] = await Promise.all([
@@ -24,7 +24,7 @@ export class BuilderService {
       githubRepos: githubData?.repos
     };
 
-    console.log("Raw data collected. Sending to AI Gateway...");
+
 
     // 3. AI Extraction
     const extractionPrompt = `You are an expert resume builder AI. Given the following raw data extracted from a user's LinkedIn profile and GitHub account, construct a fully formatted, highly professional Resume JSON.
@@ -155,7 +155,7 @@ ${JSON.stringify(parsedData)}
       return null;
     }
 
-    console.log(`Triggering Apify LinkedIn Actor for: ${linkedInUrl}`);
+
     try {
       // Start the run and wait up to 120 seconds
       const runRes = await fetch(`https://api.apify.com/v2/acts/LpVuK3Zozwuipa5bp/runs?token=${apifyToken}&waitForFinish=120`, {
@@ -204,7 +204,7 @@ ${JSON.stringify(parsedData)}
         headers["Authorization"] = `token ${process.env.GITHUB_TOKEN}`;
       }
 
-      console.log(`Fetching GitHub profile for: ${username}`);
+
       
       const profileRes = await fetch(`https://api.github.com/users/${username}`, { headers });
       if (!profileRes.ok) return null;

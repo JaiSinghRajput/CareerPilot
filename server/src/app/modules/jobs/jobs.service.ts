@@ -205,7 +205,7 @@ export class JobsService {
           country_indeed: countryIndeed
         };
     
-        console.log("Fetching matching jobs with payload:", payload);
+
         const response = await fetch(process.env.JOB_SPY_API_URL as string, {
           method: 'POST',
           headers: {
@@ -265,7 +265,7 @@ export class JobsService {
           if (parts.length > 1) {
               parts.shift(); // Remove the city/most specific element
               const broaderLocation = parts.join(', ');
-              console.log(`Not enough jobs found for ${searchLocation}. Broadening search to ${broaderLocation}`);
+
               await scrapeAndSave(broaderLocation, 0); // Scrape the broader area from page 0
           }
       }
