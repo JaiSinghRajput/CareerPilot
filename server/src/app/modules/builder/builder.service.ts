@@ -16,12 +16,16 @@ export class BuilderService {
       githubUsername ? this.fetchGitHubData(githubUsername) : Promise.resolve(null)
     ]);
 
+    if (!linkedInData && !githubData) {
+      throw new Error("Failed to retrieve LinkedIn/GitHub profile data. Please try again or contact support.");
+    }
+
     // 2. Format the raw data for the AI
     const rawData = {
       source: "LinkedIn + GitHub",
-      linkedInProfile: linkedInData,
-      githubProfile: githubData?.profile,
-      githubRepos: githubData?.repos
+      linkedInProfile: linkedInData || null,
+      githubProfile: githubData?.profile || null,
+      githubRepos: githubData?.repos || null
     };
 
 
@@ -195,6 +199,12 @@ ${JSON.stringify(parsedData)}
 
   private async fetchGitHubData(username: string) {
     try {
+      // Clean username if a URL was provided
+      let cleanUsername = username.trim();
+      if (cleanUsername.includes('github.com/')) {
+          cleanUsername = cleanUsername.split('github.com/')[1]?.split('/')[0] || cleanUsername;
+      }
+
       const headers: Record<string, string> = {
         "Accept": "application/vnd.github.v3+json",
         "User-Agent": "CareerPilot-App"
@@ -204,13 +214,14 @@ ${JSON.stringify(parsedData)}
         headers["Authorization"] = `token ${process.env.GITHUB_TOKEN}`;
       }
 
-
-      
-      const profileRes = await fetch(`https://api.github.com/users/${username}`, { headers });
-      if (!profileRes.ok) return null;
+      const profileRes = await fetch(`https://api.github.com/users/${cleanUsername}`, { headers });
+      if (!profileRes.ok) {
+        console.error(`GitHub API returned ${profileRes.status} for user ${cleanUsername}`);
+        return null;
+      }
       const profile = await profileRes.json();
 
-      const reposRes = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=5`, { headers });
+      const reposRes = await fetch(`https://api.github.com/users/${cleanUsername}/repos?sort=updated&per_page=5`, { headers });
       const repos = reposRes.ok ? await reposRes.json() : [];
 
       // Simplify repo data to avoid massive JSON size
