@@ -10,26 +10,30 @@ dotenv.config();
 // Primary
 const primaryAiProvider = new OpenAICompatibleProvider({
   apiKey: process.env.AI_API_KEY ?? process.env.OPENAI_API_KEY ?? 'local-key',
-  baseURL: process.env.AI_API_URL ?? "https://api.openai.com/api/v1",
+  baseURL: (process.env.AI_API_URL ?? "https://api.openai.com/api/v1").replace(/\/+$/, ''),
+  timeout: 120000,
 });
 
 // Fallback
 const fallbackAiProvider = new OpenAICompatibleProvider({
   apiKey: process.env.FALLBACK_AI_API_KEY ?? 'fallback-key',
-  baseURL: process.env.FALLBACK_AI_API_URL ?? "https://api.openai.com/api/v1",
+  baseURL: (process.env.FALLBACK_AI_API_URL ?? "https://api.openai.com/api/v1").replace(/\/+$/, ''),
+  timeout: 120000,
 });
 
 // --- Chat Mode (OpenRouter / Custom) ---
 // Primary
 const primaryChatProvider = new OpenAICompatibleProvider({
-  baseURL: process.env.CHAT_LLM_API_BASE_URL as string,
+  baseURL: (process.env.CHAT_LLM_API_BASE_URL ?? "").replace(/\/+$/, ''),
   apiKey: process.env.CHAT_LLM_API_KEY as string,
+  timeout: 120000,
 });
 
 // Fallback
 const fallbackChatProvider = new OpenAICompatibleProvider({
-  baseURL: process.env.FALLBACK_CHAT_LLM_API_BASE_URL as string,
+  baseURL: (process.env.FALLBACK_CHAT_LLM_API_BASE_URL ?? "").replace(/\/+$/, ''),
   apiKey: process.env.FALLBACK_CHAT_LLM_API_KEY as string,
+  timeout: 120000,
 });
 
 export const aiEvents = new AgentEventBus();
